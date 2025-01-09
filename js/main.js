@@ -215,9 +215,58 @@ const state = {
 // Calculate total pages
 const totalPages = Math.ceil(articleTopics.length / state.topicsPerPage);
 
+// Function to update pagination controls
+function updatePagination() {
+    const pageNumbers = document.getElementById('page-numbers');
+    if (!pageNumbers) return; // Guard clause in case element doesn't exist
+    
+    pageNumbers.innerHTML = '';
+    
+    // Create page number buttons
+    for (let i = 1; i <= totalPages; i++) {
+        const pageNumber = document.createElement('button');
+        pageNumber.className = `page-number ${i === state.currentPage ? 'active' : ''}`;
+        pageNumber.textContent = i;
+        pageNumber.onclick = () => goToPage(i);
+        pageNumbers.appendChild(pageNumber);
+    }
+
+    // Update prev/next buttons
+    const prevButton = document.querySelector('.pagination-button.prev');
+    const nextButton = document.querySelector('.pagination-button.next');
+    
+    if (prevButton) {
+        prevButton.disabled = state.currentPage === 1;
+    }
+    if (nextButton) {
+        nextButton.disabled = state.currentPage === totalPages;
+    }
+}
+
+// Function to show articles topics
+function showArticlesTopics() {
+    const container = document.getElementById('articles-topics');
+    container.innerHTML = `
+        <div class="articles-topics-container"></div>
+        <div class="pagination">
+            <button class="pagination-button prev" onclick="changePage('prev')">Previous</button>
+            <div id="page-numbers" class="page-numbers"></div>
+            <button class="pagination-button next" onclick="changePage('next')">Next</button>
+        </div>
+    `;
+    
+    container.style.display = 'block';
+    document.getElementById('article-list').style.display = 'none';
+    document.getElementById('article-content').style.display = 'none';
+    
+    displayTopics();
+}
+
 // Function to display topics for current page
 function displayTopics() {
-    const container = document.getElementById('articles-topics');
+    const container = document.querySelector('.articles-topics-container');
+    if (!container) return;
+    
     container.innerHTML = '';
     
     // Calculate start and end indices for current page
@@ -265,29 +314,6 @@ function displayTopics() {
     updatePagination();
 }
 
-// Function to update pagination controls
-function updatePagination() {
-    const pageNumbers = document.getElementById('page-numbers');
-    pageNumbers.innerHTML = '';
-    
-    for (let i = 1; i <= totalPages; i++) {
-        const pageNumber = document.createElement('button');
-        pageNumber.className = `page-number ${i === state.currentPage ? 'active' : ''}`;
-        pageNumber.textContent = i;
-        pageNumber.onclick = () => goToPage(i);
-        pageNumbers.appendChild(pageNumber);
-    }
-
-    // Update prev/next buttons
-    const prevButton = document.querySelector('.pagination-button.prev');
-    const nextButton = document.querySelector('.pagination-button.next');
-    
-    if (prevButton && nextButton) {
-        prevButton.disabled = state.currentPage === 1;
-        nextButton.disabled = state.currentPage === totalPages;
-    }
-}
-
 // Function to change page
 function changePage(direction) {
     if (direction === 'prev' && state.currentPage > 1) {
@@ -306,15 +332,3 @@ function goToPage(page) {
     }
 }
 
-// Function to show articles topics
-function showArticlesTopics() {
-    const topicsContainer = document.getElementById('articles-topics');
-    const articleList = document.getElementById('article-list');
-    const articleContent = document.getElementById('article-content');
-    
-    topicsContainer.style.display = 'flex';
-    articleList.style.display = 'none';
-    articleContent.style.display = 'none';
-    
-    displayTopics();
-}
