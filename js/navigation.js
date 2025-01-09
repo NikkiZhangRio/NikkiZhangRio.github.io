@@ -98,16 +98,16 @@ class NavigationManager {
         }
     }
 
-    setupLoadingIndicators() {
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'loading';
+    // setupLoadingIndicators() {
+    //     const loadingDiv = document.createElement('div');
+    //     loadingDiv.className = 'loading';
         
-        // Add loading indicator before content loads
-        document.querySelectorAll('.topic-grid, .article-list, .artwork-grid').forEach(container => {
-            const loader = loadingDiv.cloneNode(true);
-            container.parentNode.insertBefore(loader, container);
-        });
-    }
+    //     // Add loading indicator before content loads
+    //     document.querySelectorAll('.topic-grid, .article-list, .artwork-grid').forEach(container => {
+    //         const loader = loadingDiv.cloneNode(true);
+    //         container.parentNode.insertBefore(loader, container);
+    //     });
+    // }
 
     goBack() {
         if (this.pageHistory.length > 0) {
