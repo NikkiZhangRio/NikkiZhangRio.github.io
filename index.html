@@ -84,21 +84,25 @@
     <!-- Artworks Page -->
     <div id="artworks" class="page">
         <h2>Artworks</h2>
-        <!-- Artwork Topics Grid -->
-        <div id="artworks-topics" class="topic-grid">
-            <div class="topic-card" onclick="showArtworkTopic('paintings')">
-                <img src="images/topics/paintings.jpg" alt="Paintings">
-                <div class="overlay">
-                    <h3>Paintings</h3>
-                    <p>Oil and acrylic works</p>
+        <!-- Artwork Topics Carousel -->
+        <div id="artworks-topics" class="artworks-carousel">
+            <button class="carousel-button prev" onclick="moveCarousel(-1)">
+                <span class="arrow">‹</span>
+            </button>
+            
+            <div class="carousel-container">
+                <div class="carousel-track">
+                    <!-- Topics will be added here by JavaScript -->
                 </div>
             </div>
-            <div class="topic-card" onclick="showArtworkTopic('digital')">
-                <img src="images/topics/digital.jpg" alt="Digital Art">
-                <div class="overlay">
-                    <h3>Digital Art</h3>
-                    <p>Digital creations</p>
-                </div>
+            
+            <button class="carousel-button next" onclick="moveCarousel(1)">
+                <span class="arrow">›</span>
+            </button>
+
+            <!-- Dot Navigation -->
+            <div class="carousel-dots">
+                <!-- Dots will be added here by JavaScript -->
             </div>
         </div>
 

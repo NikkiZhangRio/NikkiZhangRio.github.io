@@ -420,3 +420,104 @@ function showArticlesTopics() {
     // Display topics
     displayTopics();
 }
+
+// Artwork topics data
+const artworkTopics = [
+    { id: 'paintings', title: 'Paintings', subtitle: 'Oil and acrylic works', image: 'images/topics/paintings.jpg' },
+    { id: 'digital', title: 'Digital Art', subtitle: 'Digital creations', image: 'images/topics/digital.jpg' },
+    { id: 'drawings', title: 'Drawings', subtitle: 'Pencil and charcoal', image: 'images/topics/drawings.jpg' },
+    { id: 'sculptures', title: 'Sculptures', subtitle: '3D artworks', image: 'images/topics/sculptures.jpg' },
+    { id: 'photography', title: 'Photography', subtitle: 'Digital and film', image: 'images/topics/photography.jpg' },
+    { id: 'prints', title: 'Prints', subtitle: 'Various printing techniques', image: 'images/topics/prints.jpg' },
+    { id: 'mixed-media', title: 'Mixed Media', subtitle: 'Combined techniques', image: 'images/topics/mixed-media.jpg' },
+    { id: 'installations', title: 'Installations', subtitle: 'Space and context', image: 'images/topics/installations.jpg' },
+    { id: 'ceramics', title: 'Ceramics', subtitle: 'Clay and pottery', image: 'images/topics/ceramics.jpg' },
+    { id: 'textile', title: 'Textile Art', subtitle: 'Fabric and fiber', image: 'images/topics/textile.jpg' }
+];
+
+// Carousel state
+let currentIndex = 0;
+
+// Initialize carousel
+function initializeCarousel() {
+    const track = document.querySelector('.carousel-track');
+    const dotsContainer = document.querySelector('.carousel-dots');
+    
+    // Add topics to carousel
+    track.innerHTML = artworkTopics.map((topic, index) => `
+        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+            <div class="carousel-topic-card" onclick="showArtworkTopic('${topic.id}')">
+                <img src="${topic.image}" alt="${topic.title}">
+                <div class="overlay">
+                    <h3>${topic.title}</h3>
+                    <p>${topic.subtitle}</p>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    // Add dot navigation
+    dotsContainer.innerHTML = artworkTopics.map((_, index) => `
+        <button class="carousel-dot ${index === 0 ? 'active' : ''}"
+                onclick="goToSlide(${index})"
+                aria-label="Go to slide ${index + 1}">
+        </button>
+    `).join('');
+    
+    updateCarousel();
+}
+
+// Move carousel
+function moveCarousel(direction) {
+    currentIndex = (currentIndex + direction + artworkTopics.length) % artworkTopics.length;
+    updateCarousel();
+}
+
+// Go to specific slide
+function goToSlide(index) {
+    currentIndex = index;
+    updateCarousel();
+}
+
+// Update carousel display
+function updateCarousel() {
+    const track = document.querySelector('.carousel-track');
+    const items = document.querySelectorAll('.carousel-item');
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    // Update transform
+    const offset = -currentIndex * 33.333;
+    track.style.transform = `translateX(${offset}%)`;
+    
+    // Update active classes
+    items.forEach((item, index) => {
+        item.classList.toggle('active', index === currentIndex);
+    });
+    
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+    });
+}
+
+// Show artworks topics function
+function showArtworksTopics() {
+    const artworksTopics = document.getElementById('artworks-topics');
+    const artworkGrid = document.getElementById('artwork-grid');
+    
+    if (artworksTopics && artworkGrid) {
+        artworksTopics.style.display = 'block';
+        artworkGrid.style.display = 'none';
+        
+        // Initialize carousel if not already done
+        if (!document.querySelector('.carousel-item')) {
+            initializeCarousel();
+        }
+    }
+}
+
+// Initialize carousel when the artworks page is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#artworks') {
+        initializeCarousel();
+    }
+});
