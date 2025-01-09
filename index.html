@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name - Art & Words</title>
+    <title>Portfolio</title>
     <style>
-        /* Existing styles remain the same */
         * {
             margin: 0;
             padding: 0;
@@ -64,7 +63,6 @@
             display: block;
         }
 
-        /* Modified home styles */
         #home {
             min-height: 100vh;
             display: flex;
@@ -78,7 +76,6 @@
             position: relative;
         }
 
-        /* Add overlay to make text more readable */
         #home::before {
             content: '';
             position: absolute;
@@ -106,7 +103,6 @@
             color: #ffffff;
         }
 
-        /* Rest of the existing styles remain the same */
         .topic-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -213,7 +209,6 @@
     </style>
 </head>
 <body>
-    <!-- Rest of the HTML structure remains the same -->
     <nav>
         <ul>
             <li><button onclick="showPage('home')">Home</button></li>
@@ -226,7 +221,7 @@
 
     <div id="home" class="page active">
         <div class="home-content">
-            <h1>Your Name</h1>
+            <h1>Your Name - Art & Words</h1>
             <p>Articles & Artworks</p>
         </div>
     </div>
@@ -297,7 +292,6 @@
     </div>
 
     <script>
-        // Site data remains the same
         const siteData = {
             articles: {
                 nature: [
@@ -346,14 +340,18 @@
             }
         };
 
-        // Modified navigation function
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
-                page.style.display = 'none'; // Hide all pages
+                page.style.display = 'none';
             });
-            document.getElementById(pageId).classList.add('active');
-            document.getElementById(pageId).style.display = pageId === 'home' ? 'flex' : 'block';
+            
+            const currentPage = document.getElementById(pageId);
+            currentPage.classList.add('active');
+            currentPage.style.display = pageId === 'home' ? 'flex' : 'block';
+            
+            // Update page title based on current section
+            document.title = pageId === 'home' ? 'Your Name - Art & Words' : `Portfolio - ${pageId.charAt(0).toUpperCase() + pageId.slice(1)}`;
 
             // Reset article and artwork views when changing pages
             if (pageId === 'articles') {
@@ -364,7 +362,6 @@
             }
         }
 
-        // Rest of the JavaScript functions remain the same
         function showArticlesTopics() {
             document.getElementById('articles-topics').style.display = 'grid';
             document.getElementById('article-list').style.display = 'none';
