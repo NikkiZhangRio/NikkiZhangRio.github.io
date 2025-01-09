@@ -7,7 +7,7 @@
         "medium": "Oil on Canvas",
         "year": "2024",
         "dimensions": "24x36 inches",
-        "image": "/images/artworks/paintings/painting1.jpg",
+        "image": "../images/artworks/paintings/painting1.jpg",
         "description": "A serene autumn landscape reflecting in still waters",
         "tags": ["landscape", "oil", "autumn"]
       },
@@ -17,7 +17,7 @@
         "medium": "Acrylic on Canvas",
         "year": "2024",
         "dimensions": "30x40 inches",
-        "image": "/images/artworks/paintings/painting2.jpg",
+        "image": "../images/artworks/paintings/painting2.jpg",
         "description": "Cityscape during golden hour",
         "tags": ["cityscape", "acrylic", "sunset"]
       }
