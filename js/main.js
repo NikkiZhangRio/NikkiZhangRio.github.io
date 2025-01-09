@@ -185,7 +185,7 @@ function showArtworksTopics() {
     document.getElementById('artwork-grid').style.display = 'none';
 }
 
-// Topics data
+// Topics data - Example with 16 topics (will show across 2 pages)
 const articleTopics = [
     { id: 'nature', title: 'Nature' },
     { id: 'art', title: 'Art' },
@@ -208,43 +208,12 @@ const articleTopics = [
 // Pagination state
 const state = {
     currentPage: 1,
-    topicsPerPage: 12,
-    topicsPerRow: 4
+    topicsPerPage: 12, // 3 rows × 4 topics
+    topicsPerRow: 4    // Exactly 4 topics per row
 };
 
 // Calculate total pages
 const totalPages = Math.ceil(articleTopics.length / state.topicsPerPage);
-
-// Function to create a row of topics
-function createTopicRow(topics) {
-    const row = document.createElement('div');
-    row.className = 'articles-topic-row';
-    
-    topics.forEach(topic => {
-        const card = document.createElement('div');
-        card.className = 'articles-topic-card';
-        card.onclick = () => showArticleTopic(topic.id);
-        
-        card.innerHTML = `
-            <div class="articles-topic-content">
-                <h3>${topic.title}</h3>
-            </div>
-        `;
-        
-        row.appendChild(card);
-    });
-
-    // Fill empty slots in the last row
-    const emptySlots = state.topicsPerRow - topics.length;
-    for (let i = 0; i < emptySlots; i++) {
-        const emptyCard = document.createElement('div');
-        emptyCard.className = 'articles-topic-card empty';
-        emptyCard.style.visibility = 'hidden';
-        row.appendChild(emptyCard);
-    }
-
-    return row;
-}
 
 // Function to display topics for current page
 function displayTopics() {
@@ -258,10 +227,38 @@ function displayTopics() {
     // Get topics for current page
     const currentTopics = articleTopics.slice(startIndex, endIndex);
     
-    // Create rows
+    // Create rows (3 rows per page)
     for (let i = 0; i < currentTopics.length; i += state.topicsPerRow) {
+        const row = document.createElement('div');
+        row.className = 'articles-topic-row';
+        
+        // Add 4 topics to this row
         const rowTopics = currentTopics.slice(i, i + state.topicsPerRow);
-        const row = createTopicRow(rowTopics);
+        
+        // Create topic cards
+        rowTopics.forEach(topic => {
+            const card = document.createElement('div');
+            card.className = 'articles-topic-card';
+            card.onclick = () => showArticleTopic(topic.id);
+            
+            card.innerHTML = `
+                <div class="articles-topic-content">
+                    <h3>${topic.title}</h3>
+                </div>
+            `;
+            
+            row.appendChild(card);
+        });
+
+        // Fill empty slots in the last row if needed
+        const emptySlots = state.topicsPerRow - rowTopics.length;
+        for (let j = 0; j < emptySlots; j++) {
+            const emptyCard = document.createElement('div');
+            emptyCard.className = 'articles-topic-card';
+            emptyCard.style.visibility = 'hidden';
+            row.appendChild(emptyCard);
+        }
+
         container.appendChild(row);
     }
 
@@ -285,8 +282,10 @@ function updatePagination() {
     const prevButton = document.querySelector('.pagination-button.prev');
     const nextButton = document.querySelector('.pagination-button.next');
     
-    prevButton.disabled = state.currentPage === 1;
-    nextButton.disabled = state.currentPage === totalPages;
+    if (prevButton && nextButton) {
+        prevButton.disabled = state.currentPage === 1;
+        nextButton.disabled = state.currentPage === totalPages;
+    }
 }
 
 // Function to change page
@@ -307,15 +306,15 @@ function goToPage(page) {
     }
 }
 
-// Initialize topics display
-function initializeTopics() {
-    displayTopics();
-}
-
-// Update showArticlesTopics function
+// Function to show articles topics
 function showArticlesTopics() {
-    document.getElementById('articles-topics').style.display = 'flex';
-    document.getElementById('article-list').style.display = 'none';
-    document.getElementById('article-content').style.display = 'none';
-    initializeTopics();
+    const topicsContainer = document.getElementById('articles-topics');
+    const articleList = document.getElementById('article-list');
+    const articleContent = document.getElementById('article-content');
+    
+    topicsContainer.style.display = 'flex';
+    articleList.style.display = 'none';
+    articleContent.style.display = 'none';
+    
+    displayTopics();
 }

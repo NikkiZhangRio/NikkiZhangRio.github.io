@@ -519,7 +519,7 @@ h3 {
     }
 }
 
-/* Articles topics container */
+/* Articles container and layout */
 .articles-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -529,13 +529,44 @@ h3 {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-bottom: 2rem;
 }
 
 .articles-topic-row {
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.articles-topic-card {
+    flex: 1;
+    width: calc(25% - 1.125rem); /* Equal width for 4 cards with gap */
+    height: 120px;
+    cursor: pointer;
+    background-color: #f3f4f6;
+    border-radius: 0.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.articles-topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e5e7eb;
+}
+
+.articles-topic-content {
+    text-align: center;
+}
+
+.articles-topic-content h3 {
+    font-size: 1.25rem;
+    color: #1a1a1a;
+    margin: 0;
 }
 
 /* Pagination styles */
@@ -544,7 +575,7 @@ h3 {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 3rem;
     padding: 1rem 0;
 }
 
@@ -590,4 +621,23 @@ h3 {
     background-color: #374151;
     color: white;
     border-color: #374151;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .articles-topic-row {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .articles-topic-card {
+        width: calc(50% - 0.5rem);
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .articles-topic-card {
+        width: 100%;
+    }
 }
