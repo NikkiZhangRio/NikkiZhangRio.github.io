@@ -30,8 +30,6 @@ class NavigationManager {
     }
 
     showPage(pageId, updateHistory = true) {
-        console.log('Showing page:', pageId); // Debug log
-        
         // Hide all pages
         document.querySelectorAll('.page').forEach(page => {
             page.classList.remove('active');
@@ -43,9 +41,6 @@ class NavigationManager {
         if (newPage) {
             newPage.style.display = pageId === 'home' ? 'flex' : 'block';
             newPage.classList.add('active');
-            console.log('Page displayed:', pageId); // Debug log
-        } else {
-            console.error('Page not found:', pageId); // Debug log
         }
 
         // Update navigation history
@@ -82,54 +77,89 @@ class NavigationManager {
         };
         document.title = titles[pageId] || 'Portfolio';
     }
-
-    goBack() {
-        if (this.previousPage) {
-            this.showPage(this.previousPage);
-        }
-    }
 }
 
 // Initialize navigation manager
 const navigationManager = new NavigationManager();
 
-// Expose all necessary functions to the global scope (window object)
+// Function to show articles topics view
+function showArticlesTopics() {
+    // Show topics and hide other views
+    const topicsContainer = document.getElementById('articles-topics');
+    const articleList = document.getElementById('article-list');
+    const articleContent = document.getElementById('article-content');
+    const topicsPagination = document.querySelector('.articles-container > .pagination');
+    
+    if (topicsContainer && articleList && articleContent) {
+        // Show topics and their pagination
+        topicsContainer.style.display = 'block';
+        topicsPagination.style.display = 'flex';
+        
+        // Hide article views
+        articleList.style.display = 'none';
+        articleContent.style.display = 'none';
+        
+        // Display topics
+        displayTopics();
+    }
+}
+
+// Function to show article list view
+function showArticleList() {
+    const topicsContainer = document.getElementById('articles-topics');
+    const articleList = document.getElementById('article-list');
+    const articleContent = document.getElementById('article-content');
+    const topicsPagination = document.querySelector('.articles-container > .pagination');
+
+    // Hide topics and their pagination
+    topicsContainer.style.display = 'none';
+    topicsPagination.style.display = 'none';
+
+    // Show article list and hide article content
+    articleList.style.display = 'block';
+    articleContent.style.display = 'none';
+
+    // Redisplay articles with pagination
+    displayArticlesPage();
+}
+
+// Function to show artworks topics view
+function showArtworksTopics() {
+    const artworksTopics = document.getElementById('artworks-topics');
+    const artworkGrid = document.getElementById('artwork-grid');
+    
+    if (artworksTopics && artworkGrid) {
+        artworksTopics.style.display = 'grid';
+        artworkGrid.style.display = 'none';
+    }
+}
+
+// Expose necessary functions to window object
 window.showPage = function(pageId) {
     navigationManager.showPage(pageId);
 };
 
-window.showArticlesTopics = function() {
-    document.getElementById('articles-topics').style.display = 'flex';
-    document.getElementById('article-list').style.display = 'none';
-    document.getElementById('article-content').style.display = 'none';
-};
+window.showArticlesTopics = showArticlesTopics;
+window.showArticleList = showArticleList;
+window.showArtworksTopics = showArtworksTopics;
 
-window.showArticleList = function() {
-    document.getElementById('article-list').style.display = 'block';
-    document.getElementById('article-content').style.display = 'none';
-};
-
-window.showArtworksTopics = function() {
-    document.getElementById('artworks-topics').style.display = 'grid';
-    document.getElementById('artwork-grid').style.display = 'none';
-};
-
+// Handle article topic display
 window.showArticleTopic = async function(topic) {
-    const contentManager = new ContentManager();
     const listContent = document.getElementById('article-list-content');
     const listContainer = document.getElementById('article-list');
+    const topicsPagination = document.querySelector('.articles-container > .pagination');
+    
+    // Hide topics pagination
+    if (topicsPagination) {
+        topicsPagination.style.display = 'none';
+    }
+    
+    // Reset article pagination state
+    articleState.currentPage = 1;
+    articleState.currentTopic = topic;
     
     try {
-        const articles = await contentManager.loadArticleCategory(topic);
-        
-        listContent.innerHTML = articles.map(article => `
-            <div class="article-card" onclick="showArticle('${topic}', '${article.id}')">
-                <h3>${article.title}</h3>
-                <p>${article.excerpt}</p>
-                <small>${article.date}</small>
-            </div>
-        `).join('');
-
+        await displayArticlesPage();
         document.getElementById('articles-topics').style.display = 'none';
         listContainer.style.display = 'block';
     } catch (error) {
@@ -138,12 +168,13 @@ window.showArticleTopic = async function(topic) {
     }
 };
 
+// Handle artwork topic display
 window.showArtworkTopic = async function(topic) {
-    const contentManager = new ContentManager();
     const gridContent = document.getElementById('artwork-grid-content');
     const gridContainer = document.getElementById('artwork-grid');
     
     try {
+        const contentManager = new ContentManager();
         const artworks = await contentManager.loadArtworkCategory(topic);
         
         gridContent.innerHTML = artworks.map(artwork => `
@@ -169,7 +200,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.back-button').forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-            navigationManager.goBack();
+            const parentSection = button.closest('.page');
+            
+            if (parentSection.id === 'articles') {
+                // Check if we're in article content view
+                if (document.getElementById('article-content').style.display === 'block') {
+                    showArticleList(); // Go back to articles list
+                } else {
+                    showArticlesTopics(); // Go back to topics
+                }
+            } else if (parentSection.id === 'artworks') {
+                showArtworksTopics(); // Go back to artworks topics
+            }
         });
     });
 
