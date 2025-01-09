@@ -99,7 +99,7 @@ window.showPage = function(pageId) {
 };
 
 window.showArticlesTopics = function() {
-    document.getElementById('articles-topics').style.display = 'grid';
+    document.getElementById('articles-topics').style.display = 'flex';
     document.getElementById('article-list').style.display = 'none';
     document.getElementById('article-content').style.display = 'none';
 };
