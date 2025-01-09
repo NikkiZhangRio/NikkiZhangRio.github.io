@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Art & Words</title>
+    <style>
+        /* Minimalist styling with artistic touches */
+        :root {
+            --primary-color: #1a1a1a;
+            --accent-color: #826f66;
+            --background-color: #f8f8f8;
+            --text-color: #333;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation styling */
+        nav {
+            position: fixed;
+            top: 50%;
+            right: 2rem;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            text-align: right;
+        }
+
+        nav li {
+            margin: 2rem 0;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--accent-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Container and general styling */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Home page styling */
+        .home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .slideshow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .slideshow img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slideshow img.active {
+            opacity: 1;
+        }
+
+        /* Topic grid styling */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .topic-card {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .topic-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .topic-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .topic-card .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+        }
+
+        /* Article styling */
+        .article-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .article-link {
+            display: block;
+            padding: 2rem;
+            margin: 1rem 0;
+            background: white;
+            text-decoration: none;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .article-link:hover {
+            transform: translateX(10px);
+        }
+
+        .article-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+
+        /* Article content styling */
+        .article-header {
+            margin-bottom: 2rem;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .article-meta {
+            color: var(--accent-color);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .article-body {
+            line-height: 1.8;
+        }
+
+        .article-body h3 {
+            margin: 2rem 0 1rem;
+            color: var(--primary-color);
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-image {
+            width: 100%;
+            margin: 2rem 0;
+        }
+
+        .image-caption {
+            text-align: center;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .info-box {
+            background: rgba(130, 111, 102, 0.1);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        /* Artwork grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .like-button {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .like-button:hover {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                transform: none;
+                background: white;
+                padding: 1rem;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            nav ul {
+                display: flex;
+                justify-content: space-around;
+                text-align: center;
+            }
+
+            nav li {
+                margin: 0;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#articles">Articles</a></li>
+            <li><a href="#artworks">Artworks</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page home" id="home">
+        <div class="slideshow">
+            <img src="/api/placeholder/1920/1080" alt="Background 1" class="active">
+            <img src="/api/placeholder/1920/1080" alt="Background 2">
+            <img src="/api/placeholder/1920/1080" alt="Background 3">
+        </div>
+        <div class="container">
+            <h1>Your Name</h1>
+            <p>Articles & Artworks</p>
+        </div>
+    </div>
+
+    <div class="page" id="about">
+        <div class="container">
+            <h2>About</h2>
+            <p>Write about your journey, inspirations, and philosophy here.</p>
+        </div>
+    </div>
+
+    <div class="page" id="articles">
+        <div class="container">
+            <h2>Articles</h2>
+            
+            <!-- Topics Grid -->
+            <div class="topic-grid">
+                <div class="topic-card" onclick="window.siteData.showContent('articles', 'nature')">
+                    <img src="/api/placeholder/400/400" alt="Nature">
+                    <div class="overlay">
+                        <h3>Nature</h3>
+                        <p>Exploring the natural world</p>
+                    </div>
+                </div>
+                <div class="topic-card" onclick="window.siteData.showContent('articles', 'art')">
+                    <img src="/api/placeholder/400/400" alt="Art">
+                    <div class="overlay">
+                        <h3>Art</h3>
+                        <p>Thoughts on creativity</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content View -->
+            <div class="content-view" style="display: none;">
+                <a href="#" class="back-button" onclick="window.siteData.showTopics('articles')">← Back to Topics</a>
+                
+                <!-- Article List -->
+                <div class="article-list"></div>
+
+                <!-- Article Content -->
+                <div class="article-content" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="artworks">
+        <div class="container">
+            <h2>Artworks</h2>
+            
+            <!-- Topics Grid -->
+            <div class="topic-grid">
+                <div class="topic-card" onclick="window.siteData.showContent('artworks', 'paintings')">
+                    <img src="/api/placeholder/400/400" alt="Paintings">
+                    <div class="overlay">
+                        <h3>Paintings</h3>
+                        <p>Oil and acrylic works</p>
+                    </div>
+                </div>
+                <div class="topic-card" onclick="window.siteData.showContent('artworks', 'digital')">
+                    <img src="/api/placeholder/400/400" alt="Digital Art">
+                    <div class="overlay">
+                        <h3>Digital Art</h3>
+                        <p>Digital creations</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content View -->
+            <div class="content-view" style="display: none;">
+                <a href="#" class="back-button" onclick="window.siteData.showTopics('artworks')">← Back to Topics</a>
+                <div class="grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="contact">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>Connect with me at: your.email@example.com</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize all site data and functions in a single object
+        window.siteData = {
+            // Data
+            articles: {
+                nature: [
+                    {
+                        id: 'nature-1',
+                        title: 'The Silent Language of Trees',
+                        excerpt: 'Exploring how trees communicate through an underground fungal network...',
+                        date: '2025-01-15',
+                        likes: 24
+                    },
+                    {
+                        id: 'nature-2',
+                        title: 'Dawn Chorus: A Symphony of Birds',
+                        excerpt: 'Understanding the morning songs of different bird species...',
+                        date: '2025-01-10',
+                        likes: 18
+                    }
+                ],
+                art: [
+                    {
+                        id: 'art-1',
+                        title: 'The Evolution of Abstract Expressionism',
+                        excerpt: 'Tracing the development of abstract expressionism through the 20th century...',
+                        date: '2025-01-05',
+                        likes: 27
+                    }
+                ]
+            },
+
+            artworks: {
+                paintings: [
+                    {
+                        id: 'painting-1',
+                        title: 'Autumn Reflections',
+                        medium: 'Oil on Canvas',
+                        year: '2024',
+                        likes: 45,
+                        imageUrl: '/api/placeholder/400/300'
+                    }
+                ],
+                digital: [
+                    {
+                        id: 'digital-1',
+                        title: 'Cybernetic Dreams',
+                        medium: 'Digital Illustration',
+                        year: '2024',
+                        likes: 63,
+                        imageUrl: '/api/placeholder/400/300'
+                    }
+                ]
+            },
+
+            articleContent: {
+                'nature-1': {
+                    title: 'The Silent Language of Trees',
+                    date: '2025-01-15',
+                    author: 'Your Name',
+                    likes: 24,
+                    content: `
+                        <div class="article-header">
+                            <img src="/api/placeholder/800/400" alt="Forest canopy" class="featured-image">
+                            <p class="article-meta">Written by Your Name • 15 January 2025 • Nature</p>
+                        </div>
+                        <p class="article-lead">Deep beneath our feet, trees are talking. Through an intricate network of fungal threads, they share resources, warn of dangers, and even nurture their offspring.</p>
+                        <div class="article-body">
+                            <h3>The Wood Wide Web</h3>
+                            <p>In the quiet depths of forests worldwide, an incredible communication network operates day and night. Scientists have dubbed it the "Wood Wide Web" – a complex system of roots, fungi, and bacteria that allows trees to share nutrients and information.</p>
+                            
+                            <img src="/api/placeholder/600/300" alt="Mycorrhizal network" class="article-image">
+                            <p class="image-caption">Diagram showing how mycorrhizal networks connect different trees in a forest</p>
+                            
+                            <div class="info-box">
+                                <h4>Did You Know?</h4>
+                                <p>A single teaspoon of forest soil can contain several miles of fungal
