@@ -519,16 +519,13 @@ h3 {
     }
 }
 
-/* Articles container and layout */
 .articles-container {
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.articles-topics-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+#articles-topics {
+    margin-bottom: 2rem;
 }
 
 .articles-topic-row {
@@ -540,7 +537,7 @@ h3 {
 
 .articles-topic-card {
     flex: 1;
-    width: calc(25% - 1.125rem); /* Equal width for 4 cards with gap */
+    min-width: 0; /* Prevents flex items from overflowing */
     height: 120px;
     cursor: pointer;
     background-color: #f3f4f6;
@@ -575,52 +572,8 @@ h3 {
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-top: 3rem;
+    margin-top: 2rem;
     padding: 1rem 0;
-}
-
-.pagination-button {
-    padding: 0.5rem 1rem;
-    border: 1px solid #e5e7eb;
-    background-color: white;
-    border-radius: 0.375rem;
-    color: #374151;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.pagination-button:hover:not(:disabled) {
-    background-color: #f3f4f6;
-    border-color: #d1d5db;
-}
-
-.pagination-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.page-numbers {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.page-number {
-    padding: 0.5rem 1rem;
-    border: 1px solid #e5e7eb;
-    background-color: white;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.page-number:hover {
-    background-color: #f3f4f6;
-}
-
-.page-number.active {
-    background-color: #374151;
-    color: white;
-    border-color: #374151;
 }
 
 /* Responsive design */
@@ -631,13 +584,13 @@ h3 {
     }
     
     .articles-topic-card {
-        width: calc(50% - 0.5rem);
+        flex: calc(50% - 0.5rem);
         margin-bottom: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .articles-topic-card {
-        width: 100%;
+        flex: 100%;
     }
 }

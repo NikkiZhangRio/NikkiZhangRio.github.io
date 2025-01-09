@@ -58,20 +58,13 @@
         <h2>Articles</h2>
         <!-- Topics Container -->
         <div class="articles-container">
-            <!-- Topics Rows - Will be populated by JavaScript -->
-            <div id="articles-topics" class="articles-topics-container"></div>
-            
-            <!-- Pagination -->
+            <div id="articles-topics">
+                <!-- Topics rows will be populated by JavaScript -->
+            </div>
             <div class="pagination">
-                <button class="pagination-button prev" onclick="changePage('prev')" disabled>
-                    Previous
-                </button>
-                <div id="page-numbers" class="page-numbers">
-                    <!-- Page numbers will be populated by JavaScript -->
-                </div>
-                <button class="pagination-button next" onclick="changePage('next')">
-                    Next
-                </button>
+                <button class="pagination-button prev" onclick="changePage('prev')">Previous</button>
+                <div id="page-numbers" class="page-numbers"></div>
+                <button class="pagination-button next" onclick="changePage('next')">Next</button>
             </div>
         </div>
 
@@ -87,7 +80,7 @@
             <div id="article-full-content"></div>
         </div>
     </div>
-    
+
     <!-- Artworks Page -->
     <div id="artworks" class="page">
         <h2>Artworks</h2>

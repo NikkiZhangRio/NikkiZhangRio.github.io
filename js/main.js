@@ -168,12 +168,20 @@ async function showArtworkTopic(topic) {
     }
 }
 
-// Navigation helper functions
+// Function to show articles topics
 function showArticlesTopics() {
-    document.getElementById('articles-topics').style.display = 'grid';
-    document.getElementById('article-list').style.display = 'none';
-    document.getElementById('article-content').style.display = 'none';
+    const topicsContainer = document.getElementById('articles-topics');
+    const articleList = document.getElementById('article-list');
+    const articleContent = document.getElementById('article-content');
+    
+    if (topicsContainer && articleList && articleContent) {
+        topicsContainer.style.display = 'block';
+        articleList.style.display = 'none';
+        articleContent.style.display = 'none';
+        displayTopics();
+    }
 }
+
 
 function showArticleList() {
     document.getElementById('article-list').style.display = 'block';
@@ -264,7 +272,7 @@ function showArticlesTopics() {
 
 // Function to display topics for current page
 function displayTopics() {
-    const container = document.querySelector('.articles-topics-container');
+    const container = document.getElementById('articles-topics');
     if (!container) return;
     
     container.innerHTML = '';
@@ -276,43 +284,45 @@ function displayTopics() {
     // Get topics for current page
     const currentTopics = articleTopics.slice(startIndex, endIndex);
     
-    // Create rows (3 rows per page)
-    for (let i = 0; i < currentTopics.length; i += state.topicsPerRow) {
-        const row = document.createElement('div');
-        row.className = 'articles-topic-row';
+    // Create three rows with 4 topics each
+    for (let rowIndex = 0; rowIndex < 3; rowIndex++) {
+        const startRowIndex = rowIndex * 4;
+        const rowTopics = currentTopics.slice(startRowIndex, startRowIndex + 4);
         
-        // Add 4 topics to this row
-        const rowTopics = currentTopics.slice(i, i + state.topicsPerRow);
-        
-        // Create topic cards
-        rowTopics.forEach(topic => {
-            const card = document.createElement('div');
-            card.className = 'articles-topic-card';
-            card.onclick = () => showArticleTopic(topic.id);
+        if (rowTopics.length > 0) {
+            const row = document.createElement('div');
+            row.className = 'articles-topic-row';
             
-            card.innerHTML = `
-                <div class="articles-topic-content">
-                    <h3>${topic.title}</h3>
-                </div>
-            `;
-            
-            row.appendChild(card);
-        });
+            // Create the 4 topic cards for this row
+            rowTopics.forEach(topic => {
+                const card = document.createElement('div');
+                card.className = 'articles-topic-card';
+                card.onclick = () => showArticleTopic(topic.id);
+                
+                card.innerHTML = `
+                    <div class="articles-topic-content">
+                        <h3>${topic.title}</h3>
+                    </div>
+                `;
+                
+                row.appendChild(card);
+            });
 
-        // Fill empty slots in the last row if needed
-        const emptySlots = state.topicsPerRow - rowTopics.length;
-        for (let j = 0; j < emptySlots; j++) {
-            const emptyCard = document.createElement('div');
-            emptyCard.className = 'articles-topic-card';
-            emptyCard.style.visibility = 'hidden';
-            row.appendChild(emptyCard);
+            // Fill empty slots in the row if needed
+            const emptySlots = 4 - rowTopics.length;
+            for (let i = 0; i < emptySlots; i++) {
+                const emptyCard = document.createElement('div');
+                emptyCard.className = 'articles-topic-card';
+                emptyCard.style.visibility = 'hidden';
+                row.appendChild(emptyCard);
+            }
+
+            container.appendChild(row);
         }
-
-        container.appendChild(row);
     }
 
     updatePagination();
-}
+} 
 
 // Function to change page
 function changePage(direction) {
