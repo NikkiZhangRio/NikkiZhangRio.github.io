@@ -78,29 +78,25 @@ const articleState = {
 async function showArticleTopic(topic) {
     const listContent = document.getElementById('article-list-content');
     const listContainer = document.getElementById('article-list');
-    const topicsPagination = document.querySelector('.articles-container .pagination');
-    
-    // Hide topics pagination
-    if (topicsPagination) {
-        topicsPagination.style.display = 'none';
-    }
     
     // Reset article pagination state
     articleState.currentPage = 1;
     articleState.currentTopic = topic;
     
-    // Show loading state
-    showLoading(listContent);
-    
     try {
-        await displayArticlesPage();
+        // Hide topics container and pagination
         document.getElementById('articles-topics').style.display = 'none';
+        document.querySelector('.articles-container > .pagination').style.display = 'none';
+        
+        // Show article list container
         listContainer.style.display = 'block';
+        
+        // Display articles with pagination
+        await displayArticlesPage();
+        
     } catch (error) {
         console.error('Error loading articles:', error);
         listContent.innerHTML = '<div class="error-message">Error loading articles. Please try again.</div>';
-    } finally {
-        removeLoading(listContent);
     }
 }
 
@@ -320,12 +316,9 @@ async function displayArticlesPage() {
     // Calculate pagination
     const startIndex = (articleState.currentPage - 1) * articleState.articlesPerPage;
     const endIndex = Math.min(startIndex + articleState.articlesPerPage, articles.length);
+    const currentArticles = articles.slice(startIndex, endIndex);
     const totalPages = Math.ceil(articles.length / articleState.articlesPerPage);
     
-    // Get articles for current page
-    const currentArticles = articles.slice(startIndex, endIndex);
-    
-    // Create container for articles and pagination
     listContent.innerHTML = `
         <div class="articles-list">
             ${currentArticles.map(article => `
@@ -339,31 +332,51 @@ async function displayArticlesPage() {
                 </div>
             `).join('')}
         </div>
-        <div class="pagination">
-            <button class="pagination-button prev" onclick="changeArticlePage('prev')" ${articleState.currentPage === 1 ? 'disabled' : ''}>
-                Previous
-            </button>
-            <div class="page-numbers">
-                ${generateArticlePageNumbers(totalPages)}
+        ${totalPages > 1 ? `
+            <div class="pagination">
+                <button class="pagination-button prev" 
+                        onclick="changeArticlePage('prev')" 
+                        ${articleState.currentPage === 1 ? 'disabled' : ''}>
+                    Previous
+                </button>
+                <div class="page-numbers">
+                    ${generatePageNumbers(articleState.currentPage, totalPages)}
+                </div>
+                <button class="pagination-button next" 
+                        onclick="changeArticlePage('next')" 
+                        ${articleState.currentPage === totalPages ? 'disabled' : ''}>
+                    Next
+                </button>
             </div>
-            <button class="pagination-button next" onclick="changeArticlePage('next')" ${articleState.currentPage === totalPages ? 'disabled' : ''}>
-                Next
-            </button>
-        </div>
+        ` : ''}
     `;
 }
 
-function generateArticlePageNumbers(totalPages) {
-    let pageNumbers = '';
-    for (let i = 1; i <= totalPages; i++) {
-        pageNumbers += `
-            <button class="page-number ${i === articleState.currentPage ? 'active' : ''}"
-                    onclick="goToArticlePage(${i})">
-                ${i}
+function generatePageNumbers(currentPage, totalPages) {
+    let pages = [];
+    // Always show first page, last page, current page, and one page before and after current
+    let toShow = new Set([1, totalPages, currentPage, currentPage - 1, currentPage + 1]);
+    
+    // Remove invalid page numbers
+    toShow = Array.from(toShow).filter(page => page >= 1 && page <= totalPages).sort((a, b) => a - b);
+    
+    // Generate page buttons with ellipsis where needed
+    let result = '';
+    toShow.forEach((page, index) => {
+        // Add ellipsis if there's a gap
+        if (index > 0 && page - toShow[index - 1] > 1) {
+            result += '<span class="page-number" style="border:none;">...</span>';
+        }
+        
+        result += `
+            <button class="page-number ${page === currentPage ? 'active' : ''}"
+                    onclick="goToArticlePage(${page})">
+                ${page}
             </button>
         `;
-    }
-    return pageNumbers;
+    });
+    
+    return result;
 }
 
 async function changeArticlePage(direction) {
@@ -389,20 +402,21 @@ async function goToArticlePage(page) {
     }
 }
 
-// Update showArticlesTopics to show topics pagination
+// Update showArticlesTopics to properly show/hide elements
 function showArticlesTopics() {
     const topicsContainer = document.getElementById('articles-topics');
     const articleList = document.getElementById('article-list');
     const articleContent = document.getElementById('article-content');
-    const topicsPagination = document.querySelector('.articles-container .pagination');
+    const topicsPagination = document.querySelector('.articles-container > .pagination');
     
-    if (topicsContainer && articleList && articleContent) {
-        topicsContainer.style.display = 'block';
-        articleList.style.display = 'none';
-        articleContent.style.display = 'none';
-        if (topicsPagination) {
-            topicsPagination.style.display = 'flex';
-        }
-        displayTopics();
-    }
+    // Show topics and their pagination
+    topicsContainer.style.display = 'block';
+    topicsPagination.style.display = 'flex';
+    
+    // Hide article views
+    articleList.style.display = 'none';
+    articleContent.style.display = 'none';
+    
+    // Display topics
+    displayTopics();
 }
