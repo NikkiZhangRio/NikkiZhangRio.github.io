@@ -92,13 +92,14 @@ nav button:hover::after {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-image: url('../images/background/home-bg.jpg');
+    background-image: url('/images/background/home-bg.jpg');  /* Updated path */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     position: relative;
 }
 
+/* Make sure the overlay doesn't block the background image */
 #home::before {
     content: '';
     position: absolute;
@@ -106,7 +107,7 @@ nav button:hover::after {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);  /* Adjust opacity as needed */
     z-index: 1;
 }
 
@@ -115,9 +116,6 @@ nav button:hover::after {
     z-index: 2;
     color: white;
     padding: 2rem;
-    border-radius: 1rem;
-    backdrop-filter: blur(5px);
-    background: rgba(0, 0, 0, 0.2);
 }
 
 .home-content h1 {
