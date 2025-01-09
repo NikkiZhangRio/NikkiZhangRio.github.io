@@ -67,35 +67,39 @@ function removeLoading(container) {
     }
 }
 
+// Article pagination state
+const articleState = {
+    currentPage: 1,
+    articlesPerPage: 10,
+    currentTopic: null
+};
+
 // Article functions
 async function showArticleTopic(topic) {
     const listContent = document.getElementById('article-list-content');
     const listContainer = document.getElementById('article-list');
+    const topicsPagination = document.querySelector('.articles-container .pagination');
+    
+    // Hide topics pagination
+    if (topicsPagination) {
+        topicsPagination.style.display = 'none';
+    }
+    
+    // Reset article pagination state
+    articleState.currentPage = 1;
+    articleState.currentTopic = topic;
     
     // Show loading state
     showLoading(listContent);
     
     try {
-        const articles = await contentManager.loadArticleCategory(topic);
-        
-        listContent.innerHTML = articles.map(article => `
-            <div class="article-card" onclick="showArticle('${topic}', '${article.id}')">
-                <h3>${article.title}</h3>
-                <p>${article.excerpt}</p>
-                <small>${article.date}</small>
-                <div class="tags">
-                    ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                </div>
-            </div>
-        `).join('');
-
+        await displayArticlesPage();
         document.getElementById('articles-topics').style.display = 'none';
         listContainer.style.display = 'block';
     } catch (error) {
         console.error('Error loading articles:', error);
         listContent.innerHTML = '<div class="error-message">Error loading articles. Please try again.</div>';
     } finally {
-        // Remove loading state
         removeLoading(listContent);
     }
 }
@@ -168,20 +172,6 @@ async function showArtworkTopic(topic) {
     }
 }
 
-// Function to show articles topics
-function showArticlesTopics() {
-    const topicsContainer = document.getElementById('articles-topics');
-    const articleList = document.getElementById('article-list');
-    const articleContent = document.getElementById('article-content');
-    
-    if (topicsContainer && articleList && articleContent) {
-        topicsContainer.style.display = 'block';
-        articleList.style.display = 'none';
-        articleContent.style.display = 'none';
-        displayTopics();
-    }
-}
-
 
 function showArticleList() {
     document.getElementById('article-list').style.display = 'block';
@@ -249,25 +239,6 @@ function updatePagination() {
     if (nextButton) {
         nextButton.disabled = state.currentPage === totalPages;
     }
-}
-
-// Function to show articles topics
-function showArticlesTopics() {
-    const container = document.getElementById('articles-topics');
-    container.innerHTML = `
-        <div class="articles-topics-container"></div>
-        <div class="pagination">
-            <button class="pagination-button prev" onclick="changePage('prev')">Previous</button>
-            <div id="page-numbers" class="page-numbers"></div>
-            <button class="pagination-button next" onclick="changePage('next')">Next</button>
-        </div>
-    `;
-    
-    container.style.display = 'block';
-    document.getElementById('article-list').style.display = 'none';
-    document.getElementById('article-content').style.display = 'none';
-    
-    displayTopics();
 }
 
 // Function to display topics for current page
@@ -342,3 +313,96 @@ function goToPage(page) {
     }
 }
 
+async function displayArticlesPage() {
+    const listContent = document.getElementById('article-list-content');
+    const articles = await contentManager.loadArticleCategory(articleState.currentTopic);
+    
+    // Calculate pagination
+    const startIndex = (articleState.currentPage - 1) * articleState.articlesPerPage;
+    const endIndex = Math.min(startIndex + articleState.articlesPerPage, articles.length);
+    const totalPages = Math.ceil(articles.length / articleState.articlesPerPage);
+    
+    // Get articles for current page
+    const currentArticles = articles.slice(startIndex, endIndex);
+    
+    // Create container for articles and pagination
+    listContent.innerHTML = `
+        <div class="articles-list">
+            ${currentArticles.map(article => `
+                <div class="article-card" onclick="showArticle('${articleState.currentTopic}', '${article.id}')">
+                    <h3>${article.title}</h3>
+                    <p>${article.excerpt}</p>
+                    <small>${article.date}</small>
+                    <div class="tags">
+                        ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        <div class="pagination">
+            <button class="pagination-button prev" onclick="changeArticlePage('prev')" ${articleState.currentPage === 1 ? 'disabled' : ''}>
+                Previous
+            </button>
+            <div class="page-numbers">
+                ${generateArticlePageNumbers(totalPages)}
+            </div>
+            <button class="pagination-button next" onclick="changeArticlePage('next')" ${articleState.currentPage === totalPages ? 'disabled' : ''}>
+                Next
+            </button>
+        </div>
+    `;
+}
+
+function generateArticlePageNumbers(totalPages) {
+    let pageNumbers = '';
+    for (let i = 1; i <= totalPages; i++) {
+        pageNumbers += `
+            <button class="page-number ${i === articleState.currentPage ? 'active' : ''}"
+                    onclick="goToArticlePage(${i})">
+                ${i}
+            </button>
+        `;
+    }
+    return pageNumbers;
+}
+
+async function changeArticlePage(direction) {
+    const articles = await contentManager.loadArticleCategory(articleState.currentTopic);
+    const totalPages = Math.ceil(articles.length / articleState.articlesPerPage);
+    
+    if (direction === 'prev' && articleState.currentPage > 1) {
+        articleState.currentPage--;
+        await displayArticlesPage();
+    } else if (direction === 'next' && articleState.currentPage < totalPages) {
+        articleState.currentPage++;
+        await displayArticlesPage();
+    }
+}
+
+async function goToArticlePage(page) {
+    const articles = await contentManager.loadArticleCategory(articleState.currentTopic);
+    const totalPages = Math.ceil(articles.length / articleState.articlesPerPage);
+    
+    if (page >= 1 && page <= totalPages) {
+        articleState.currentPage = page;
+        await displayArticlesPage();
+    }
+}
+
+// Update showArticlesTopics to show topics pagination
+function showArticlesTopics() {
+    const topicsContainer = document.getElementById('articles-topics');
+    const articleList = document.getElementById('article-list');
+    const articleContent = document.getElementById('article-content');
+    const topicsPagination = document.querySelector('.articles-container .pagination');
+    
+    if (topicsContainer && articleList && articleContent) {
+        topicsContainer.style.display = 'block';
+        articleList.style.display = 'none';
+        articleContent.style.display = 'none';
+        if (topicsPagination) {
+            topicsPagination.style.display = 'flex';
+        }
+        displayTopics();
+    }
+}

@@ -594,3 +594,43 @@ h3 {
         flex: 100%;
     }
 }
+
+.articles-list {
+    margin-bottom: 2rem;
+}
+
+#article-list .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem 0;
+}
+
+/* Style adjustments for article cards */
+.article-card {
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-card:last-child {
+    margin-bottom: 0;
+}
+
+/* Add fade-in animation for smooth transitions */
+.articles-list {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
