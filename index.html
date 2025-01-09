@@ -5,14 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Name - Art & Words</title>
     <style>
-        :root {
-            --primary-color: #1a1a1a;
-            --accent-color: #826f66;
-            --background-color: #f8f8f8;
-            --text-color: #333;
-            --transition: all 0.3s ease;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -20,43 +12,51 @@
         }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--background-color);
+            background-color: #f9fafb;
+            color: #1a1a1a;
         }
 
         nav {
             position: fixed;
-            top: 2rem;
-            right: 2rem;
-            z-index: 100;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
         nav ul {
+            display: flex;
+            justify-content: center;
             list-style: none;
-            text-align: right;
+            padding: 1rem;
         }
 
         nav li {
-            margin: 1rem 0;
+            margin: 0 1.5rem;
         }
 
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: var(--transition);
+        nav button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #374151;
+            cursor: pointer;
+            transition: color 0.2s;
         }
 
-        nav a:hover {
-            color: var(--accent-color);
+        nav button:hover {
+            color: #1a1a1a;
         }
 
         .page {
-            min-height: 100vh;
             display: none;
-            padding: 2rem;
+            padding: 5rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .page.active {
@@ -64,43 +64,43 @@
         }
 
         #home {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: url('/api/placeholder/1920/1080') center/cover;
         }
 
-        #home h1 {
-            font-size: 3rem;
-            color: white;
+        .home-content h1 {
+            font-size: 2.5rem;
             margin-bottom: 1rem;
         }
 
-        #home p {
-            color: white;
-            font-size: 1.5rem;
+        .home-content p {
+            font-size: 1.25rem;
+            color: #6b7280;
         }
 
         .topic-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            padding: 2rem;
+            margin-top: 2rem;
         }
 
         .topic-card {
             position: relative;
             aspect-ratio: 1;
-            overflow: hidden;
             cursor: pointer;
+            overflow: hidden;
+            border-radius: 0.5rem;
         }
 
         .topic-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: var(--transition);
+            transition: transform 0.3s;
         }
 
         .topic-card:hover img {
@@ -112,81 +112,76 @@
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2rem;
+            padding: 1.5rem;
             background: linear-gradient(transparent, rgba(0,0,0,0.7));
             color: white;
         }
 
         .article-list {
-            max-width: 800px;
-            margin: 2rem auto;
+            margin-top: 2rem;
         }
 
-        .article-link {
-            display: block;
-            padding: 2rem;
-            margin: 1rem 0;
+        .article-card {
             background: white;
-            text-decoration: none;
-            color: var(--text-color);
-            transition: var(--transition);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 0.5rem;
         }
 
-        .article-link:hover {
-            transform: translateX(10px);
+        .article-card:hover {
+            transform: translateX(0.5rem);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 1rem 0;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            color: #1a1a1a;
         }
 
         .artwork-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
-            padding: 2rem;
+            margin-top: 2rem;
         }
 
         .artwork-card {
             background: white;
             padding: 1rem;
+            border-radius: 0.5rem;
         }
 
         .artwork-card img {
             width: 100%;
-            height: 300px;
+            height: 200px;
             object-fit: cover;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
         }
 
-        .back-button {
-            display: inline-block;
-            margin: 2rem;
-            color: var(--accent-color);
-            text-decoration: none;
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
         }
 
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                position: fixed;
-                top: 0;
-                right: 0;
-                left: 0;
-                background: white;
-                padding: 1rem;
-                text-align: center;
-            }
-
+        @media (max-width: 640px) {
             nav ul {
-                display: flex;
-                justify-content: space-around;
+                padding: 0.5rem;
             }
 
             nav li {
-                margin: 0;
+                margin: 0 0.75rem;
+            }
+
+            .topic-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -194,16 +189,16 @@
 <body>
     <nav>
         <ul>
-            <li><a href="#" onclick="showPage('home')">Home</a></li>
-            <li><a href="#" onclick="showPage('about')">About</a></li>
-            <li><a href="#" onclick="showPage('articles')">Articles</a></li>
-            <li><a href="#" onclick="showPage('artworks')">Artworks</a></li>
-            <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            <li><button onclick="showPage('home')">Home</button></li>
+            <li><button onclick="showPage('about')">About</button></li>
+            <li><button onclick="showPage('articles')">Articles</button></li>
+            <li><button onclick="showPage('artworks')">Artworks</button></li>
+            <li><button onclick="showPage('contact')">Contact</button></li>
         </ul>
     </nav>
 
     <div id="home" class="page active">
-        <div>
+        <div class="home-content">
             <h1>Your Name</h1>
             <p>Articles & Artworks</p>
         </div>
@@ -215,59 +210,57 @@
     </div>
 
     <div id="articles" class="page">
-        <div id="topics" class="content-section active">
-            <div class="topic-grid">
-                <div class="topic-card" onclick="showArticleList('nature')">
-                    <img src="/api/placeholder/400/400" alt="Nature">
-                    <div class="overlay">
-                        <h3>Nature</h3>
-                        <p>Exploring the natural world</p>
-                    </div>
+        <h2>Articles</h2>
+        <div id="articles-topics" class="topic-grid">
+            <div class="topic-card" onclick="showArticleTopic('nature')">
+                <img src="/api/placeholder/400/400" alt="Nature">
+                <div class="overlay">
+                    <h3>Nature</h3>
+                    <p>Exploring the natural world</p>
                 </div>
-                <div class="topic-card" onclick="showArticleList('art')">
-                    <img src="/api/placeholder/400/400" alt="Art">
-                    <div class="overlay">
-                        <h3>Art</h3>
-                        <p>Thoughts on creativity</p>
-                    </div>
+            </div>
+            <div class="topic-card" onclick="showArticleTopic('art')">
+                <img src="/api/placeholder/400/400" alt="Art">
+                <div class="overlay">
+                    <h3>Art</h3>
+                    <p>Thoughts on creativity</p>
                 </div>
             </div>
         </div>
 
-        <div id="article-list" class="content-section">
-            <a href="#" class="back-button" onclick="showArticleTopics()">← Back to Topics</a>
-            <div class="article-list" id="article-links"></div>
+        <div id="article-list" style="display: none;">
+            <span class="back-button" onclick="showArticlesTopics()">← Back to Topics</span>
+            <div id="article-list-content" class="article-list"></div>
         </div>
 
-        <div id="article-content" class="content-section">
-            <a href="#" class="back-button" onclick="showArticleList(currentTopic)">← Back to Articles</a>
-            <div id="full-article"></div>
+        <div id="article-content" style="display: none;">
+            <span class="back-button" onclick="showArticleList()">← Back to Articles</span>
+            <div id="article-full-content"></div>
         </div>
     </div>
 
     <div id="artworks" class="page">
-        <div id="artwork-topics" class="content-section active">
-            <div class="topic-grid">
-                <div class="topic-card" onclick="showArtworks('paintings')">
-                    <img src="/api/placeholder/400/400" alt="Paintings">
-                    <div class="overlay">
-                        <h3>Paintings</h3>
-                        <p>Oil and acrylic works</p>
-                    </div>
+        <h2>Artworks</h2>
+        <div id="artworks-topics" class="topic-grid">
+            <div class="topic-card" onclick="showArtworkTopic('paintings')">
+                <img src="/api/placeholder/400/400" alt="Paintings">
+                <div class="overlay">
+                    <h3>Paintings</h3>
+                    <p>Oil and acrylic works</p>
                 </div>
-                <div class="topic-card" onclick="showArtworks('digital')">
-                    <img src="/api/placeholder/400/400" alt="Digital Art">
-                    <div class="overlay">
-                        <h3>Digital Art</h3>
-                        <p>Digital creations</p>
-                    </div>
+            </div>
+            <div class="topic-card" onclick="showArtworkTopic('digital')">
+                <img src="/api/placeholder/400/400" alt="Digital Art">
+                <div class="overlay">
+                    <h3>Digital Art</h3>
+                    <p>Digital creations</p>
                 </div>
             </div>
         </div>
 
-        <div id="artwork-grid" class="content-section">
-            <a href="#" class="back-button" onclick="showArtworkTopics()">← Back to Topics</a>
-            <div class="artwork-grid" id="artwork-container"></div>
+        <div id="artwork-grid" style="display: none;">
+            <span class="back-button" onclick="showArtworksTopics()">← Back to Topics</span>
+            <div id="artwork-grid-content" class="artwork-grid"></div>
         </div>
     </div>
 
@@ -277,104 +270,132 @@
     </div>
 
     <script>
-        let currentTopic = '';
+        // Site data
+        const siteData = {
+            articles: {
+                nature: [
+                    {
+                        id: 'nature-1',
+                        title: 'The Silent Language of Trees',
+                        excerpt: 'Exploring how trees communicate through an underground fungal network...',
+                        date: '2025-01-15',
+                        content: 'Full article content here...'
+                    },
+                    {
+                        id: 'nature-2',
+                        title: 'Dawn Chorus: A Symphony of Birds',
+                        excerpt: 'Understanding the morning songs of different bird species...',
+                        date: '2025-01-10',
+                        content: 'Full article content here...'
+                    }
+                ],
+                art: [
+                    {
+                        id: 'art-1',
+                        title: 'The Evolution of Abstract Expressionism',
+                        excerpt: 'Tracing the development of abstract expressionism through the 20th century...',
+                        date: '2025-01-05',
+                        content: 'Full article content here...'
+                    }
+                ]
+            },
+            artworks: {
+                paintings: [
+                    {
+                        id: 'painting-1',
+                        title: 'Autumn Reflections',
+                        medium: 'Oil on Canvas',
+                        year: '2024'
+                    }
+                ],
+                digital: [
+                    {
+                        id: 'digital-1',
+                        title: 'Cybernetic Dreams',
+                        medium: 'Digital Illustration',
+                        year: '2024'
+                    }
+                ]
+            }
+        };
 
+        // Navigation functions
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
+
+            // Reset article and artwork views when changing pages
+            if (pageId === 'articles') {
+                showArticlesTopics();
+            }
+            if (pageId === 'artworks') {
+                showArtworksTopics();
+            }
         }
 
-        function showArticleTopics() {
-            document.querySelectorAll('#articles .content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('topics').classList.add('active');
+        // Articles functions
+        function showArticlesTopics() {
+            document.getElementById('articles-topics').style.display = 'grid';
+            document.getElementById('article-list').style.display = 'none';
+            document.getElementById('article-content').style.display = 'none';
         }
 
-        function showArticleList(topic) {
-            currentTopic = topic;
-            const articles = {
-                nature: [
-                    { id: 'nature-1', title: 'The Silent Language of Trees', excerpt: 'Exploring how trees communicate...' },
-                    { id: 'nature-2', title: 'Dawn Chorus: A Symphony of Birds', excerpt: 'Understanding morning songs...' }
-                ],
-                art: [
-                    { id: 'art-1', title: 'The Evolution of Abstract Expressionism', excerpt: 'Tracing the development...' }
-                ]
-            };
-
-            const articleLinks = document.getElementById('article-links');
-            articleLinks.innerHTML = articles[topic].map(article => `
-                <div class="article-link" onclick="showArticle('${article.id}')">
+        function showArticleTopic(topic) {
+            const articles = siteData.articles[topic];
+            const listContent = document.getElementById('article-list-content');
+            listContent.innerHTML = articles.map(article => `
+                <div class="article-card" onclick="showArticle('${topic}', '${article.id}')">
                     <h3>${article.title}</h3>
                     <p>${article.excerpt}</p>
+                    <small>${article.date}</small>
                 </div>
             `).join('');
 
-            document.querySelectorAll('#articles .content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('article-list').classList.add('active');
+            document.getElementById('articles-topics').style.display = 'none';
+            document.getElementById('article-list').style.display = 'block';
         }
 
-        function showArticle(articleId) {
-            const articleContent = {
-                'nature-1': {
-                    title: 'The Silent Language of Trees',
-                    content: 'Full article content about trees...'
-                }
-            };
+        function showArticleList() {
+            document.getElementById('article-list').style.display = 'block';
+            document.getElementById('article-content').style.display = 'none';
+        }
 
-            const article = articleContent[articleId];
-            document.getElementById('full-article').innerHTML = `
-                <h2>${article.title}</h2>
-                <p>${article.content}</p>
+        function showArticle(topic, articleId) {
+            const article = siteData.articles[topic].find(a => a.id === articleId);
+            document.getElementById('article-full-content').innerHTML = `
+                <div class="article-card">
+                    <h2>${article.title}</h2>
+                    <small>${article.date}</small>
+                    <p>${article.content}</p>
+                </div>
             `;
-
-            document.querySelectorAll('#articles .content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('article-content').classList.add('active');
+            document.getElementById('article-list').style.display = 'none';
+            document.getElementById('article-content').style.display = 'block';
         }
 
-        function showArtworkTopics() {
-            document.querySelectorAll('#artworks .content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('artwork-topics').classList.add('active');
+        // Artworks functions
+        function showArtworksTopics() {
+            document.getElementById('artworks-topics').style.display = 'grid';
+            document.getElementById('artwork-grid').style.display = 'none';
         }
 
-        function showArtworks(category) {
-            const artworks = {
-                paintings: [
-                    { title: 'Autumn Reflections', medium: 'Oil on Canvas' },
-                    { title: 'Mountain Lake', medium: 'Acrylic on Canvas' }
-                ],
-                digital: [
-                    { title: 'Cybernetic Dreams', medium: 'Digital Illustration' },
-                    { title: 'Future City', medium: 'Digital Art' }
-                ]
-            };
-
-            const artworkContainer = document.getElementById('artwork-container');
-            artworkContainer.innerHTML = artworks[category].map(artwork => `
+        function showArtworkTopic(topic) {
+            const artworks = siteData.artworks[topic];
+            const gridContent = document.getElementById('artwork-grid-content');
+            gridContent.innerHTML = artworks.map(artwork => `
                 <div class="artwork-card">
                     <img src="/api/placeholder/400/300" alt="${artwork.title}">
                     <h3>${artwork.title}</h3>
                     <p>${artwork.medium}</p>
+                    <small>${artwork.year}</small>
                 </div>
             `).join('');
 
-            document.querySelectorAll('#artworks .content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById('artwork-grid').classList.add('active');
+            document.getElementById('artworks-topics').style.display = 'none';
+            document.getElementById('artwork-grid').style.display = 'block';
         }
-
-        // Show home page by default
-        showPage('home');
     </script>
 </body>
 </html>
