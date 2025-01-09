@@ -1,218 +1,401 @@
-import React, { useState } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Art & Words</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-const PortfolioWebsite = () => {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [selectedTopic, setSelectedTopic] = useState(null);
-  const [selectedArticle, setSelectedArticle] = useState(null);
-  
-  const siteData = {
-    articles: {
-      nature: [
-        {
-          id: 'nature-1',
-          title: 'The Silent Language of Trees',
-          excerpt: 'Exploring how trees communicate through an underground fungal network...',
-          date: '2025-01-15',
-          likes: 24
-        },
-        {
-          id: 'nature-2',
-          title: 'Dawn Chorus: A Symphony of Birds',
-          excerpt: 'Understanding the morning songs of different bird species...',
-          date: '2025-01-10',
-          likes: 18
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background-color: #f9fafb;
+            color: #1a1a1a;
         }
-      ],
-      art: [
-        {
-          id: 'art-1',
-          title: 'The Evolution of Abstract Expressionism',
-          excerpt: 'Tracing the development of abstract expressionism through the 20th century...',
-          date: '2025-01-05',
-          likes: 27
-        }
-      ]
-    },
-    artworks: {
-      paintings: [
-        {
-          id: 'painting-1',
-          title: 'Autumn Reflections',
-          medium: 'Oil on Canvas',
-          year: '2024',
-          likes: 45
-        }
-      ],
-      digital: [
-        {
-          id: 'digital-1',
-          title: 'Cybernetic Dreams',
-          medium: 'Digital Illustration',
-          year: '2024',
-          likes: 63
-        }
-      ]
-    }
-  };
 
-  const Navigation = () => (
-    <nav className="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
-      <ul className="flex justify-center space-x-8 py-4">
-        <li><button onClick={() => {setCurrentPage('home'); setSelectedTopic(null); setSelectedArticle(null);}} className="text-gray-800 hover:text-gray-600">Home</button></li>
-        <li><button onClick={() => {setCurrentPage('about'); setSelectedTopic(null); setSelectedArticle(null);}} className="text-gray-800 hover:text-gray-600">About</button></li>
-        <li><button onClick={() => {setCurrentPage('articles'); setSelectedTopic(null); setSelectedArticle(null);}} className="text-gray-800 hover:text-gray-600">Articles</button></li>
-        <li><button onClick={() => {setCurrentPage('artworks'); setSelectedTopic(null); setSelectedArticle(null);}} className="text-gray-800 hover:text-gray-600">Artworks</button></li>
-        <li><button onClick={() => {setCurrentPage('contact'); setSelectedTopic(null); setSelectedArticle(null);}} className="text-gray-800 hover:text-gray-600">Contact</button></li>
-      </ul>
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 1rem;
+        }
+
+        nav li {
+            margin: 0 1.5rem;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #374151;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        nav button:hover {
+            color: #1a1a1a;
+        }
+
+        .page {
+            display: none;
+            padding: 5rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        #home {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .home-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .home-content p {
+            font-size: 1.25rem;
+            color: #6b7280;
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .topic-card {
+            position: relative;
+            aspect-ratio: 1;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        .topic-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .topic-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .topic-card .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white;
+        }
+
+        .article-list {
+            margin-top: 2rem;
+        }
+
+        .article-card {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 0.5rem;
+        }
+
+        .article-card:hover {
+            transform: translateX(0.5rem);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin: 1rem 0;
+            color: #4b5563;
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            color: #1a1a1a;
+        }
+
+        .artwork-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .artwork-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .artwork-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border-radius: 0.25rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 640px) {
+            nav ul {
+                padding: 0.5rem;
+            }
+
+            nav li {
+                margin: 0 0.75rem;
+            }
+
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><button onclick="showPage('home')">Home</button></li>
+            <li><button onclick="showPage('about')">About</button></li>
+            <li><button onclick="showPage('articles')">Articles</button></li>
+            <li><button onclick="showPage('artworks')">Artworks</button></li>
+            <li><button onclick="showPage('contact')">Contact</button></li>
+        </ul>
     </nav>
-  );
 
-  const HomePage = () => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <h1 className="text-4xl font-serif mb-4">Your Name</h1>
-        <p className="text-xl text-gray-600">Articles & Artworks</p>
-      </div>
-    </div>
-  );
-
-  const TopicGrid = ({ type, topics, onTopicSelect }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
-      {Object.keys(topics).map((topic) => (
-        <div 
-          key={topic}
-          onClick={() => onTopicSelect(topic)}
-          className="relative aspect-square cursor-pointer overflow-hidden group"
-        >
-          <img 
-            src="/api/placeholder/400/400" 
-            alt={topic}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6 text-white">
-            <h3 className="text-xl mb-2 capitalize">{topic}</h3>
-            <p>{type === 'articles' ? 'Read more' : 'View gallery'}</p>
-          </div>
+    <div id="home" class="page active">
+        <div class="home-content">
+            <h1>Your Name</h1>
+            <p>Articles & Artworks</p>
         </div>
-      ))}
     </div>
-  );
 
-  const ArticleList = ({ articles }) => (
-    <div className="mt-16 space-y-6">
-      {articles.map((article) => (
-        <div 
-          key={article.id}
-          onClick={() => setSelectedArticle(article)}
-          className="bg-white p-6 cursor-pointer transition-transform duration-300 hover:translate-x-2"
-        >
-          <h3 className="text-xl mb-2">{article.title}</h3>
-          <p className="text-gray-600">{article.excerpt}</p>
-          <p className="text-gray-500 mt-2">{article.date}</p>
-        </div>
-      ))}
+    <div id="about" class="page">
+        <h2>About</h2>
+        <p>Write about your journey, inspirations, and philosophy here.</p>
     </div>
-  );
 
-  const ArtworkGrid = ({ artworks }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">
-      {artworks.map((artwork) => (
-        <div key={artwork.id} className="bg-white p-4">
-          <img src="/api/placeholder/400/300" alt={artwork.title} className="w-full h-48 object-cover mb-4" />
-          <h3 className="text-lg mb-2">{artwork.title}</h3>
-          <p className="text-gray-600">{artwork.medium}</p>
-          <p className="text-gray-500">{artwork.year}</p>
-        </div>
-      ))}
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Navigation />
-      
-      <main className="container mx-auto px-4 pt-16">
-        {currentPage === 'home' && <HomePage />}
-        
-        {currentPage === 'about' && (
-          <div className="mt-16">
-            <h2 className="text-3xl mb-6">About</h2>
-            <p className="text-gray-700">Write about your journey, inspirations, and philosophy here.</p>
-          </div>
-        )}
-        
-        {currentPage === 'articles' && (
-          <div className="mt-16">
-            <h2 className="text-3xl mb-6">Articles</h2>
-            {!selectedTopic && (
-              <TopicGrid 
-                type="articles"
-                topics={siteData.articles} 
-                onTopicSelect={setSelectedTopic}
-              />
-            )}
-            {selectedTopic && !selectedArticle && (
-              <>
-                <button 
-                  onClick={() => setSelectedTopic(null)}
-                  className="text-gray-600 hover:text-gray-800 mb-8"
-                >
-                  ← Back to Topics
-                </button>
-                <ArticleList articles={siteData.articles[selectedTopic]} />
-              </>
-            )}
-            {selectedArticle && (
-              <>
-                <button 
-                  onClick={() => setSelectedArticle(null)}
-                  className="text-gray-600 hover:text-gray-800 mb-8"
-                >
-                  ← Back to Articles
-                </button>
-                <div className="bg-white p-8">
-                  <h2 className="text-3xl mb-4">{selectedArticle.title}</h2>
-                  <p className="text-gray-600 mb-8">{selectedArticle.date}</p>
-                  <p>{selectedArticle.excerpt}</p>
+    <div id="articles" class="page">
+        <h2>Articles</h2>
+        <div id="articles-topics" class="topic-grid">
+            <div class="topic-card" onclick="showArticleTopic('nature')">
+                <img src="/api/placeholder/400/400" alt="Nature">
+                <div class="overlay">
+                    <h3>Nature</h3>
+                    <p>Exploring the natural world</p>
                 </div>
-              </>
-            )}
-          </div>
-        )}
-        
-        {currentPage === 'artworks' && (
-          <div className="mt-16">
-            <h2 className="text-3xl mb-6">Artworks</h2>
-            {!selectedTopic && (
-              <TopicGrid 
-                type="artworks"
-                topics={siteData.artworks} 
-                onTopicSelect={setSelectedTopic}
-              />
-            )}
-            {selectedTopic && (
-              <>
-                <button 
-                  onClick={() => setSelectedTopic(null)}
-                  className="text-gray-600 hover:text-gray-800 mb-8"
-                >
-                  ← Back to Topics
-                </button>
-                <ArtworkGrid artworks={siteData.artworks[selectedTopic]} />
-              </>
-            )}
-          </div>
-        )}
-        
-        {currentPage === 'contact' && (
-          <div className="mt-16">
-            <h2 className="text-3xl mb-6">Contact</h2>
-            <p className="text-gray-700">Connect with me at: your.email@example.com</p>
-          </div>
-        )}
-      </main>
-    </div>
-  );
-};
+            </div>
+            <div class="topic-card" onclick="showArticleTopic('art')">
+                <img src="/api/placeholder/400/400" alt="Art">
+                <div class="overlay">
+                    <h3>Art</h3>
+                    <p>Thoughts on creativity</p>
+                </div>
+            </div>
+        </div>
 
-export default PortfolioWebsite;
+        <div id="article-list" style="display: none;">
+            <span class="back-button" onclick="showArticlesTopics()">← Back to Topics</span>
+            <div id="article-list-content" class="article-list"></div>
+        </div>
+
+        <div id="article-content" style="display: none;">
+            <span class="back-button" onclick="showArticleList()">← Back to Articles</span>
+            <div id="article-full-content"></div>
+        </div>
+    </div>
+
+    <div id="artworks" class="page">
+        <h2>Artworks</h2>
+        <div id="artworks-topics" class="topic-grid">
+            <div class="topic-card" onclick="showArtworkTopic('paintings')">
+                <img src="/api/placeholder/400/400" alt="Paintings">
+                <div class="overlay">
+                    <h3>Paintings</h3>
+                    <p>Oil and acrylic works</p>
+                </div>
+            </div>
+            <div class="topic-card" onclick="showArtworkTopic('digital')">
+                <img src="/api/placeholder/400/400" alt="Digital Art">
+                <div class="overlay">
+                    <h3>Digital Art</h3>
+                    <p>Digital creations</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="artwork-grid" style="display: none;">
+            <span class="back-button" onclick="showArtworksTopics()">← Back to Topics</span>
+            <div id="artwork-grid-content" class="artwork-grid"></div>
+        </div>
+    </div>
+
+    <div id="contact" class="page">
+        <h2>Contact</h2>
+        <p>Connect with me at: your.email@example.com</p>
+    </div>
+
+    <script>
+        // Site data
+        const siteData = {
+            articles: {
+                nature: [
+                    {
+                        id: 'nature-1',
+                        title: 'The Silent Language of Trees',
+                        excerpt: 'Exploring how trees communicate through an underground fungal network...',
+                        date: '2025-01-15',
+                        content: 'Full article content here...'
+                    },
+                    {
+                        id: 'nature-2',
+                        title: 'Dawn Chorus: A Symphony of Birds',
+                        excerpt: 'Understanding the morning songs of different bird species...',
+                        date: '2025-01-10',
+                        content: 'Full article content here...'
+                    }
+                ],
+                art: [
+                    {
+                        id: 'art-1',
+                        title: 'The Evolution of Abstract Expressionism',
+                        excerpt: 'Tracing the development of abstract expressionism through the 20th century...',
+                        date: '2025-01-05',
+                        content: 'Full article content here...'
+                    }
+                ]
+            },
+            artworks: {
+                paintings: [
+                    {
+                        id: 'painting-1',
+                        title: 'Autumn Reflections',
+                        medium: 'Oil on Canvas',
+                        year: '2024'
+                    }
+                ],
+                digital: [
+                    {
+                        id: 'digital-1',
+                        title: 'Cybernetic Dreams',
+                        medium: 'Digital Illustration',
+                        year: '2024'
+                    }
+                ]
+            }
+        };
+
+        // Navigation functions
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+
+            // Reset article and artwork views when changing pages
+            if (pageId === 'articles') {
+                showArticlesTopics();
+            }
+            if (pageId === 'artworks') {
+                showArtworksTopics();
+            }
+        }
+
+        // Articles functions
+        function showArticlesTopics() {
+            document.getElementById('articles-topics').style.display = 'grid';
+            document.getElementById('article-list').style.display = 'none';
+            document.getElementById('article-content').style.display = 'none';
+        }
+
+        function showArticleTopic(topic) {
+            const articles = siteData.articles[topic];
+            const listContent = document.getElementById('article-list-content');
+            listContent.innerHTML = articles.map(article => `
+                <div class="article-card" onclick="showArticle('${topic}', '${article.id}')">
+                    <h3>${article.title}</h3>
+                    <p>${article.excerpt}</p>
+                    <small>${article.date}</small>
+                </div>
+            `).join('');
+
+            document.getElementById('articles-topics').style.display = 'none';
+            document.getElementById('article-list').style.display = 'block';
+        }
+
+        function showArticleList() {
+            document.getElementById('article-list').style.display = 'block';
+            document.getElementById('article-content').style.display = 'none';
+        }
+
+        function showArticle(topic, articleId) {
+            const article = siteData.articles[topic].find(a => a.id === articleId);
+            document.getElementById('article-full-content').innerHTML = `
+                <div class="article-card">
+                    <h2>${article.title}</h2>
+                    <small>${article.date}</small>
+                    <p>${article.content}</p>
+                </div>
+            `;
+            document.getElementById('article-list').style.display = 'none';
+            document.getElementById('article-content').style.display = 'block';
+        }
+
+        // Artworks functions
+        function showArtworksTopics() {
+            document.getElementById('artworks-topics').style.display = 'grid';
+            document.getElementById('artwork-grid').style.display = 'none';
+        }
+
+        function showArtworkTopic(topic) {
+            const artworks = siteData.artworks[topic];
+            const gridContent = document.getElementById('artwork-grid-content');
+            gridContent.innerHTML = artworks.map(artwork => `
+                <div class="artwork-card">
+                    <img src="/api/placeholder/400/300" alt="${artwork.title}">
+                    <h3>${artwork.title}</h3>
+                    <p>${artwork.medium}</p>
+                    <small>${artwork.year}</small>
+                </div>
+            `).join('');
+
+            document.getElementById('artworks-topics').style.display = 'none';
+            document.getElementById('artwork-grid').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
