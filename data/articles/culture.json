@@ -1,0 +1,13 @@
+{
+    "category": "culture",
+    "articles": [
+      {
+        "id": "culture-1",
+        "title": "Global Art Movements",
+        "excerpt": "Examining the influence of cultural exchange on art...",
+        "date": "2025-01-18",
+        "content": "Full article content here...",
+        "tags": ["culture", "art", "global"]
+      }
+    ]
+  }

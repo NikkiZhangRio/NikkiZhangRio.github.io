@@ -1,0 +1,13 @@
+{
+    "category": "technology",
+    "articles": [
+      {
+        "id": "tech-1",
+        "title": "The Future of AI",
+        "excerpt": "Exploring the latest developments in artificial intelligence...",
+        "date": "2025-01-20",
+        "content": "Full article content here...",
+        "tags": ["AI", "technology", "future"]
+      }
+    ]
+  }
