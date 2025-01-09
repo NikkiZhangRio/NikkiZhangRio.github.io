@@ -6,8 +6,6 @@
     <meta name="description" content="Portfolio showcasing articles and artworks">
     <title>Portfolio</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Preload important images -->
-    <link rel="preload" as="image" href="/api/placeholder/1920/1080">
 </head>
 <body>
     <!-- Navigation -->
@@ -140,20 +138,7 @@
         </div>
     </div>
 
-    <!-- Loading Indicator Template -->
-    <template id="loading-template">
-        <div class="loading"></div>
-    </template>
-
-    <!-- Error Message Template -->
-    <template id="error-template">
-        <div class="error-message">
-            <p>Sorry, there was an error loading the content.</p>
-            <button onclick="retry()">Try Again</button>
-        </div>
-    </template>
-
-    <!-- Scripts -->
+    <!-- Scripts - Note the order is important -->
     <script src="js/navigation.js"></script>
     <script src="js/main.js"></script>
     <script>
@@ -163,11 +148,6 @@
             const formData = new FormData(e.target);
             // Add your form submission logic here
             console.log('Form submitted:', Object.fromEntries(formData));
-        });
-
-        // Initialize any additional features
-        document.addEventListener('DOMContentLoaded', () => {
-            // Add any additional initialization code here
         });
     </script>
 </body>
