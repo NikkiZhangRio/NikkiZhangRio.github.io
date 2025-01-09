@@ -203,7 +203,7 @@
     </nav>
 
     <div id="home" class="page active">
-        <div class="home-content">
+        <div>
             <h1>Your Name</h1>
             <p>Articles & Artworks</p>
         </div>
@@ -284,12 +284,6 @@
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
-            
-            // Show/hide home content based on the current page
-            const homeContent = document.querySelector('.home-content');
-            if (homeContent) {
-                homeContent.style.display = pageId === 'home' ? 'block' : 'none';
-            }
         }
 
         function showArticleTopics() {
