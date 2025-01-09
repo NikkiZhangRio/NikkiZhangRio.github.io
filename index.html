@@ -22,7 +22,7 @@
     <!-- Home Page -->
     <div id="home" class="page active">
         <div class="home-content">
-            <h1>Your Name - Art & Words</h1>
+            <h1>Nikki Zhang</h1>
             <p>Articles & Artworks</p>
         </div>
     </div>
@@ -52,14 +52,12 @@
         <!-- Topics Grid -->
         <div id="articles-topics" class="topic-grid">
             <div class="topic-card" onclick="showArticleTopic('nature')">
-                <img src="/api/placeholder/400/400" alt="Nature">
                 <div class="overlay">
                     <h3>Nature</h3>
                     <p>Exploring the natural world</p>
                 </div>
             </div>
             <div class="topic-card" onclick="showArticleTopic('art')">
-                <img src="/api/placeholder/400/400" alt="Art">
                 <div class="overlay">
                     <h3>Art</h3>
                     <p>Thoughts on creativity</p>
@@ -73,6 +71,12 @@
             <div id="article-list-content" class="article-list"></div>
         </div>
 
+        <!-- Single Article View -->
+        <div id="article-content" style="display: none;">
+            <span class="back-button" onclick="showArticleList()">Back to Articles</span>
+            <div id="article-full-content"></div>
+        </div>
+    </div>
         <!-- Single Article View -->
         <div id="article-content" style="display: none;">
             <span class="back-button" onclick="showArticleList()">Back to Articles</span>
