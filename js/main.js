@@ -184,3 +184,138 @@ function showArtworksTopics() {
     document.getElementById('artworks-topics').style.display = 'grid';
     document.getElementById('artwork-grid').style.display = 'none';
 }
+
+// Topics data
+const articleTopics = [
+    { id: 'nature', title: 'Nature' },
+    { id: 'art', title: 'Art' },
+    { id: 'technology', title: 'Technology' },
+    { id: 'culture', title: 'Culture' },
+    { id: 'science', title: 'Science' },
+    { id: 'travel', title: 'Travel' },
+    { id: 'food', title: 'Food & Cooking' },
+    { id: 'health', title: 'Health & Wellness' },
+    { id: 'books', title: 'Books & Literature' },
+    { id: 'music', title: 'Music' },
+    { id: 'film', title: 'Film & Cinema' },
+    { id: 'photography', title: 'Photography' },
+    { id: 'architecture', title: 'Architecture' },
+    { id: 'design', title: 'Design' },
+    { id: 'history', title: 'History' },
+    { id: 'philosophy', title: 'Philosophy' }
+];
+
+// Pagination state
+const state = {
+    currentPage: 1,
+    topicsPerPage: 12,
+    topicsPerRow: 4
+};
+
+// Calculate total pages
+const totalPages = Math.ceil(articleTopics.length / state.topicsPerPage);
+
+// Function to create a row of topics
+function createTopicRow(topics) {
+    const row = document.createElement('div');
+    row.className = 'articles-topic-row';
+    
+    topics.forEach(topic => {
+        const card = document.createElement('div');
+        card.className = 'articles-topic-card';
+        card.onclick = () => showArticleTopic(topic.id);
+        
+        card.innerHTML = `
+            <div class="articles-topic-content">
+                <h3>${topic.title}</h3>
+            </div>
+        `;
+        
+        row.appendChild(card);
+    });
+
+    // Fill empty slots in the last row
+    const emptySlots = state.topicsPerRow - topics.length;
+    for (let i = 0; i < emptySlots; i++) {
+        const emptyCard = document.createElement('div');
+        emptyCard.className = 'articles-topic-card empty';
+        emptyCard.style.visibility = 'hidden';
+        row.appendChild(emptyCard);
+    }
+
+    return row;
+}
+
+// Function to display topics for current page
+function displayTopics() {
+    const container = document.getElementById('articles-topics');
+    container.innerHTML = '';
+    
+    // Calculate start and end indices for current page
+    const startIndex = (state.currentPage - 1) * state.topicsPerPage;
+    const endIndex = Math.min(startIndex + state.topicsPerPage, articleTopics.length);
+    
+    // Get topics for current page
+    const currentTopics = articleTopics.slice(startIndex, endIndex);
+    
+    // Create rows
+    for (let i = 0; i < currentTopics.length; i += state.topicsPerRow) {
+        const rowTopics = currentTopics.slice(i, i + state.topicsPerRow);
+        const row = createTopicRow(rowTopics);
+        container.appendChild(row);
+    }
+
+    updatePagination();
+}
+
+// Function to update pagination controls
+function updatePagination() {
+    const pageNumbers = document.getElementById('page-numbers');
+    pageNumbers.innerHTML = '';
+    
+    for (let i = 1; i <= totalPages; i++) {
+        const pageNumber = document.createElement('button');
+        pageNumber.className = `page-number ${i === state.currentPage ? 'active' : ''}`;
+        pageNumber.textContent = i;
+        pageNumber.onclick = () => goToPage(i);
+        pageNumbers.appendChild(pageNumber);
+    }
+
+    // Update prev/next buttons
+    const prevButton = document.querySelector('.pagination-button.prev');
+    const nextButton = document.querySelector('.pagination-button.next');
+    
+    prevButton.disabled = state.currentPage === 1;
+    nextButton.disabled = state.currentPage === totalPages;
+}
+
+// Function to change page
+function changePage(direction) {
+    if (direction === 'prev' && state.currentPage > 1) {
+        state.currentPage--;
+    } else if (direction === 'next' && state.currentPage < totalPages) {
+        state.currentPage++;
+    }
+    displayTopics();
+}
+
+// Function to go to specific page
+function goToPage(page) {
+    if (page >= 1 && page <= totalPages) {
+        state.currentPage = page;
+        displayTopics();
+    }
+}
+
+// Initialize topics display
+function initializeTopics() {
+    displayTopics();
+}
+
+// Update showArticlesTopics function
+function showArticlesTopics() {
+    document.getElementById('articles-topics').style.display = 'flex';
+    document.getElementById('article-list').style.display = 'none';
+    document.getElementById('article-content').style.display = 'none';
+    initializeTopics();
+}
