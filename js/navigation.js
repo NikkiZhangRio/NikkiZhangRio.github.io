@@ -30,6 +30,8 @@ class NavigationManager {
     }
 
     showPage(pageId, updateHistory = true) {
+        console.log('Showing page:', pageId); // Debug log
+        
         // Hide all pages
         document.querySelectorAll('.page').forEach(page => {
             page.classList.remove('active');
@@ -41,6 +43,9 @@ class NavigationManager {
         if (newPage) {
             newPage.style.display = pageId === 'home' ? 'flex' : 'block';
             newPage.classList.add('active');
+            console.log('Page displayed:', pageId); // Debug log
+        } else {
+            console.error('Page not found:', pageId); // Debug log
         }
 
         // Update navigation history
@@ -60,10 +65,10 @@ class NavigationManager {
 
         // Reset content views if needed
         if (pageId === 'articles') {
-            showArticlesTopics();
+            window.showArticlesTopics();
         }
         if (pageId === 'artworks') {
-            showArtworksTopics();
+            window.showArtworksTopics();
         }
     }
 
@@ -88,9 +93,74 @@ class NavigationManager {
 // Initialize navigation manager
 const navigationManager = new NavigationManager();
 
-// Global navigation function used by the HTML buttons
+// Expose all necessary functions to the global scope (window object)
 window.showPage = function(pageId) {
     navigationManager.showPage(pageId);
+};
+
+window.showArticlesTopics = function() {
+    document.getElementById('articles-topics').style.display = 'grid';
+    document.getElementById('article-list').style.display = 'none';
+    document.getElementById('article-content').style.display = 'none';
+};
+
+window.showArticleList = function() {
+    document.getElementById('article-list').style.display = 'block';
+    document.getElementById('article-content').style.display = 'none';
+};
+
+window.showArtworksTopics = function() {
+    document.getElementById('artworks-topics').style.display = 'grid';
+    document.getElementById('artwork-grid').style.display = 'none';
+};
+
+window.showArticleTopic = async function(topic) {
+    const contentManager = new ContentManager();
+    const listContent = document.getElementById('article-list-content');
+    const listContainer = document.getElementById('article-list');
+    
+    try {
+        const articles = await contentManager.loadArticleCategory(topic);
+        
+        listContent.innerHTML = articles.map(article => `
+            <div class="article-card" onclick="showArticle('${topic}', '${article.id}')">
+                <h3>${article.title}</h3>
+                <p>${article.excerpt}</p>
+                <small>${article.date}</small>
+            </div>
+        `).join('');
+
+        document.getElementById('articles-topics').style.display = 'none';
+        listContainer.style.display = 'block';
+    } catch (error) {
+        console.error('Error loading articles:', error);
+        listContent.innerHTML = '<div class="error-message">Error loading articles. Please try again.</div>';
+    }
+};
+
+window.showArtworkTopic = async function(topic) {
+    const contentManager = new ContentManager();
+    const gridContent = document.getElementById('artwork-grid-content');
+    const gridContainer = document.getElementById('artwork-grid');
+    
+    try {
+        const artworks = await contentManager.loadArtworkCategory(topic);
+        
+        gridContent.innerHTML = artworks.map(artwork => `
+            <div class="artwork-card">
+                <img src="${artwork.image}" alt="${artwork.title}">
+                <h3>${artwork.title}</h3>
+                <p>${artwork.medium}</p>
+                <small>${artwork.year}</small>
+            </div>
+        `).join('');
+
+        document.getElementById('artworks-topics').style.display = 'none';
+        gridContainer.style.display = 'block';
+    } catch (error) {
+        console.error('Error loading artworks:', error);
+        gridContent.innerHTML = '<div class="error-message">Error loading artworks. Please try again.</div>';
+    }
 };
 
 // Initialize back buttons
