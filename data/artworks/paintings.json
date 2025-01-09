@@ -1,0 +1,15 @@
+{
+    "category": "paintings",
+    "artworks": [
+      {
+        "id": "painting-1",
+        "title": "Autumn Reflections",
+        "medium": "Oil on Canvas",
+        "year": "2024",
+        "dimensions": "24x36 inches",
+        "image": "/api/placeholder/800/600",
+        "description": "A serene autumn landscape reflecting in still waters",
+        "tags": ["landscape", "oil", "autumn"]
+      }
+    ]
+  }

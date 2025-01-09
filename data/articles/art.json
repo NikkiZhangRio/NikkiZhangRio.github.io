@@ -1,0 +1,14 @@
+{
+    "category": "art",
+    "articles": [
+      {
+        "id": "art-1",
+        "title": "The Evolution of Abstract Expressionism",
+        "excerpt": "Tracing the development of abstract expressionism through the 20th century...",
+        "date": "2025-01-05",
+        "content": "Full article content here...",
+        "image": "/api/placeholder/800/400",
+        "tags": ["abstract", "expressionism", "history"]
+      }
+    ]
+  }

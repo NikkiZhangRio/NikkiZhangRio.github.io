@@ -1,0 +1,23 @@
+{
+    "category": "nature",
+    "articles": [
+      {
+        "id": "nature-1",
+        "title": "The Silent Language of Trees",
+        "excerpt": "Exploring how trees communicate through an underground fungal network...",
+        "date": "2025-01-15",
+        "content": "Full article content here...",
+        "image": "/api/placeholder/800/400",
+        "tags": ["trees", "ecology", "communication"]
+      },
+      {
+        "id": "nature-2",
+        "title": "Dawn Chorus: A Symphony of Birds",
+        "excerpt": "Understanding the morning songs of different bird species...",
+        "date": "2025-01-10",
+        "content": "Full article content here...",
+        "image": "/api/placeholder/800/400",
+        "tags": ["birds", "wildlife", "morning"]
+      }
+    ]
+  }

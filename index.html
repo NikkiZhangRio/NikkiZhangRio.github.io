@@ -3,212 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio showcasing articles and artworks">
     <title>Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            background-color: #f9fafb;
-            color: #1a1a1a;
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        nav ul {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 1rem;
-        }
-
-        nav li {
-            margin: 0 1.5rem;
-        }
-
-        nav button {
-            background: none;
-            border: none;
-            font-size: 1rem;
-            color: #374151;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        nav button:hover {
-            color: #1a1a1a;
-        }
-
-        .page {
-            display: none;
-            padding: 5rem 2rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        #home {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background-image: url('/api/placeholder/1920/1080');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-        }
-
-        #home::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1;
-        }
-
-        .home-content {
-            position: relative;
-            z-index: 2;
-            color: white;
-        }
-
-        .home-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .home-content p {
-            font-size: 1.25rem;
-            color: #ffffff;
-        }
-
-        .topic-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .topic-card {
-            position: relative;
-            aspect-ratio: 1;
-            cursor: pointer;
-            overflow: hidden;
-            border-radius: 0.5rem;
-        }
-
-        .topic-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .topic-card:hover img {
-            transform: scale(1.05);
-        }
-
-        .topic-card .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem;
-            background: linear-gradient(transparent, rgba(0,0,0,0.7));
-            color: white;
-        }
-
-        .article-list {
-            margin-top: 2rem;
-        }
-
-        .article-card {
-            background: white;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border-radius: 0.5rem;
-        }
-
-        .article-card:hover {
-            transform: translateX(0.5rem);
-        }
-
-        .back-button {
-            display: inline-block;
-            margin: 1rem 0;
-            color: #4b5563;
-            cursor: pointer;
-        }
-
-        .back-button:hover {
-            color: #1a1a1a;
-        }
-
-        .artwork-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .artwork-card {
-            background: white;
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-
-        .artwork-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            border-radius: 0.25rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        @media (max-width: 640px) {
-            nav ul {
-                padding: 0.5rem;
-            }
-
-            nav li {
-                margin: 0 0.75rem;
-            }
-
-            .topic-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Preload important images -->
+    <link rel="preload" as="image" href="/api/placeholder/1920/1080">
 </head>
 <body>
+    <!-- Navigation -->
     <nav>
         <ul>
             <li><button onclick="showPage('home')">Home</button></li>
@@ -219,6 +21,7 @@
         </ul>
     </nav>
 
+    <!-- Home Page -->
     <div id="home" class="page active">
         <div class="home-content">
             <h1>Your Name - Art & Words</h1>
@@ -226,13 +29,29 @@
         </div>
     </div>
 
+    <!-- About Page -->
     <div id="about" class="page">
         <h2>About</h2>
-        <p>Write about your journey, inspirations, and philosophy here.</p>
+        <div class="about-content">
+            <img src="/api/placeholder/400/400" alt="Profile Picture" class="profile-image">
+            <div class="about-text">
+                <p>Write about your journey, inspirations, and philosophy here.</p>
+                <div class="expertise-areas">
+                    <h3>Areas of Expertise</h3>
+                    <ul>
+                        <li>Writing & Storytelling</li>
+                        <li>Visual Arts</li>
+                        <li>Creative Direction</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Articles Page -->
     <div id="articles" class="page">
         <h2>Articles</h2>
+        <!-- Topics Grid -->
         <div id="articles-topics" class="topic-grid">
             <div class="topic-card" onclick="showArticleTopic('nature')">
                 <img src="/api/placeholder/400/400" alt="Nature">
@@ -250,19 +69,23 @@
             </div>
         </div>
 
+        <!-- Article List View -->
         <div id="article-list" style="display: none;">
-            <span class="back-button" onclick="showArticlesTopics()">← Back to Topics</span>
+            <span class="back-button" onclick="showArticlesTopics()">Back to Topics</span>
             <div id="article-list-content" class="article-list"></div>
         </div>
 
+        <!-- Single Article View -->
         <div id="article-content" style="display: none;">
-            <span class="back-button" onclick="showArticleList()">← Back to Articles</span>
+            <span class="back-button" onclick="showArticleList()">Back to Articles</span>
             <div id="article-full-content"></div>
         </div>
     </div>
 
+    <!-- Artworks Page -->
     <div id="artworks" class="page">
         <h2>Artworks</h2>
+        <!-- Artwork Topics Grid -->
         <div id="artworks-topics" class="topic-grid">
             <div class="topic-card" onclick="showArtworkTopic('paintings')">
                 <img src="/api/placeholder/400/400" alt="Paintings">
@@ -280,147 +103,72 @@
             </div>
         </div>
 
+        <!-- Artwork Grid View -->
         <div id="artwork-grid" style="display: none;">
-            <span class="back-button" onclick="showArtworksTopics()">← Back to Topics</span>
+            <span class="back-button" onclick="showArtworksTopics()">Back to Topics</span>
             <div id="artwork-grid-content" class="artwork-grid"></div>
         </div>
     </div>
 
+    <!-- Contact Page -->
     <div id="contact" class="page">
         <h2>Contact</h2>
-        <p>Connect with me at: your.email@example.com</p>
+        <div class="contact-content">
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <p>Feel free to reach out for collaborations or inquiries.</p>
+                <ul class="contact-details">
+                    <li>Email: your.email@example.com</li>
+                    <li>Location: City, Country</li>
+                </ul>
+            </div>
+            <form id="contact-form" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </div>
     </div>
 
+    <!-- Loading Indicator Template -->
+    <template id="loading-template">
+        <div class="loading"></div>
+    </template>
+
+    <!-- Error Message Template -->
+    <template id="error-template">
+        <div class="error-message">
+            <p>Sorry, there was an error loading the content.</p>
+            <button onclick="retry()">Try Again</button>
+        </div>
+    </template>
+
+    <!-- Scripts -->
+    <script src="js/navigation.js"></script>
+    <script src="js/main.js"></script>
     <script>
-        const siteData = {
-            articles: {
-                nature: [
-                    {
-                        id: 'nature-1',
-                        title: 'The Silent Language of Trees',
-                        excerpt: 'Exploring how trees communicate through an underground fungal network...',
-                        date: '2025-01-15',
-                        content: 'Full article content here...'
-                    },
-                    {
-                        id: 'nature-2',
-                        title: 'Dawn Chorus: A Symphony of Birds',
-                        excerpt: 'Understanding the morning songs of different bird species...',
-                        date: '2025-01-10',
-                        content: 'Full article content here...'
-                    }
-                ],
-                art: [
-                    {
-                        id: 'art-1',
-                        title: 'The Evolution of Abstract Expressionism',
-                        excerpt: 'Tracing the development of abstract expressionism through the 20th century...',
-                        date: '2025-01-05',
-                        content: 'Full article content here...'
-                    }
-                ]
-            },
-            artworks: {
-                paintings: [
-                    {
-                        id: 'painting-1',
-                        title: 'Autumn Reflections',
-                        medium: 'Oil on Canvas',
-                        year: '2024'
-                    }
-                ],
-                digital: [
-                    {
-                        id: 'digital-1',
-                        title: 'Cybernetic Dreams',
-                        medium: 'Digital Illustration',
-                        year: '2024'
-                    }
-                ]
-            }
-        };
+        // Handle contact form submission
+        document.getElementById('contact-form')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            // Add your form submission logic here
+            console.log('Form submitted:', Object.fromEntries(formData));
+        });
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-                page.style.display = 'none';
-            });
-            
-            const currentPage = document.getElementById(pageId);
-            currentPage.classList.add('active');
-            currentPage.style.display = pageId === 'home' ? 'flex' : 'block';
-            
-            // Update page title based on current section
-            document.title = pageId === 'home' ? 'Your Name - Art & Words' : `Portfolio - ${pageId.charAt(0).toUpperCase() + pageId.slice(1)}`;
-
-            // Reset article and artwork views when changing pages
-            if (pageId === 'articles') {
-                showArticlesTopics();
-            }
-            if (pageId === 'artworks') {
-                showArtworksTopics();
-            }
-        }
-
-        function showArticlesTopics() {
-            document.getElementById('articles-topics').style.display = 'grid';
-            document.getElementById('article-list').style.display = 'none';
-            document.getElementById('article-content').style.display = 'none';
-        }
-
-        function showArticleTopic(topic) {
-            const articles = siteData.articles[topic];
-            const listContent = document.getElementById('article-list-content');
-            listContent.innerHTML = articles.map(article => `
-                <div class="article-card" onclick="showArticle('${topic}', '${article.id}')">
-                    <h3>${article.title}</h3>
-                    <p>${article.excerpt}</p>
-                    <small>${article.date}</small>
-                </div>
-            `).join('');
-
-            document.getElementById('articles-topics').style.display = 'none';
-            document.getElementById('article-list').style.display = 'block';
-        }
-
-        function showArticleList() {
-            document.getElementById('article-list').style.display = 'block';
-            document.getElementById('article-content').style.display = 'none';
-        }
-
-        function showArticle(topic, articleId) {
-            const article = siteData.articles[topic].find(a => a.id === articleId);
-            document.getElementById('article-full-content').innerHTML = `
-                <div class="article-card">
-                    <h2>${article.title}</h2>
-                    <small>${article.date}</small>
-                    <p>${article.content}</p>
-                </div>
-            `;
-            document.getElementById('article-list').style.display = 'none';
-            document.getElementById('article-content').style.display = 'block';
-        }
-
-        function showArtworksTopics() {
-            document.getElementById('artworks-topics').style.display = 'grid';
-            document.getElementById('artwork-grid').style.display = 'none';
-        }
-
-        function showArtworkTopic(topic) {
-            const artworks = siteData.artworks[topic];
-            const gridContent = document.getElementById('artwork-grid-content');
-            gridContent.innerHTML = artworks.map(artwork => `
-                <div class="artwork-card">
-                    <img src="/api/placeholder/400/300" alt="${artwork.title}">
-                    <h3>${artwork.title}</h3>
-                    <p>${artwork.medium}</p>
-                    <small>${artwork.year}</small>
-                </div>
-            `).join('');
-
-            document.getElementById('artworks-topics').style.display = 'none';
-            document.getElementById('artwork-grid').style.display = 'block';
-        }
+        // Initialize any additional features
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add any additional initialization code here
+        });
     </script>
 </body>
 </html>
