@@ -90,6 +90,7 @@ const articleState = {
 
 // Article functions
 async function showArticleTopic(topic) {
+    console.log('Showing topic:', topic); // Debug log
     const listContent = document.getElementById('article-list-content');
     const listContainer = document.getElementById('article-list');
     
@@ -103,12 +104,23 @@ async function showArticleTopic(topic) {
         
         // Hide topics container and pagination
         document.getElementById('articles-topics').style.display = 'none';
-        document.querySelector('.articles-container > .pagination').style.display = 'none';
+        const topicsPagination = document.querySelector('.articles-container > .pagination');
+        if (topicsPagination) {
+            topicsPagination.style.display = 'none';
+        }
         
         // Show article list container
         listContainer.style.display = 'block';
         
         // Load and display articles
+        const articles = await contentManager.loadArticleCategory(topic);
+        console.log('Loaded articles:', articles); // Debug log
+        
+        if (!articles || articles.length === 0) {
+            listContent.innerHTML = '<div class="error-message">No articles found for this topic.</div>';
+            return;
+        }
+        
         await displayArticlesPage();
     } catch (error) {
         console.error('Error loading articles:', error);
