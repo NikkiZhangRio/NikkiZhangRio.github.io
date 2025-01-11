@@ -60,7 +60,8 @@ class NavigationManager {
 
         // Reset content views if needed
         if (pageId === 'articles') {
-            this.showArticlesTopics();
+            document.querySelector('.articles-container > .pagination').style.display = 'flex';
+            displayTopics(); // Call displayTopics directly
         }
         if (pageId === 'artworks') {
             this.showArtworksTopics();
