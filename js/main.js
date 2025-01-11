@@ -181,7 +181,7 @@ function showArtworksTopics() {
 
 // Topics data - Example with 16 topics (will show across 2 pages)
 const articleTopics = [
-    { id: 'nature', title: 'Nature' },
+    { id: 'ai', title: 'AI' },
     { id: 'art', title: 'Art' },
     { id: 'technology', title: 'Technology' },
     { id: 'culture', title: 'Culture' },
