@@ -104,12 +104,14 @@ class NavigationManager {
     // Artwork section navigation
     showArtworksTopics() {
         const artworksPage = document.getElementById('artworks');
-        const topicsGrid = artworksPage.querySelector('#artworks-topics');
+        const topicsCarousel = artworksPage.querySelector('#artworks-topics');
         const artworkGrid = artworksPage.querySelector('#artwork-grid');
         
-        if (topicsGrid && artworkGrid) {
-            topicsGrid.style.display = 'grid';
+        if (topicsCarousel && artworkGrid) {
+            topicsCarousel.style.display = 'block'; // Change from 'grid' to 'block'
             artworkGrid.style.display = 'none';
+            // Initialize carousel
+            initializeCarousel();
         }
     }
 }

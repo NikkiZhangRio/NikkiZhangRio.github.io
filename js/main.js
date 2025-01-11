@@ -7,12 +7,17 @@ class ContentManager {
 
     async loadArticleCategory(category) {
         if (this.articlesCache.has(category)) {
-            return this.articlesCache.get(category);
+            this.articlesCache.clear(); // Clear the cache to force reload
         }
 
         try {
+            console.log('Loading category:', category); // Debug log
             const response = await fetch(`data/articles/${category}.json`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
+            console.log('Loaded data:', data); // Debug log
             this.articlesCache.set(category, data.articles);
             return data.articles;
         } catch (error) {
@@ -39,7 +44,16 @@ class ContentManager {
 
     async getArticle(category, articleId) {
         const articles = await this.loadArticleCategory(category);
-        return articles.find(article => article.id === articleId);
+        if (!articles) {
+            console.error('No articles found for category:', category);
+            return null;
+        }
+        const article = articles.find(article => article.id === articleId);
+        if (!article) {
+            console.error('Article not found:', articleId);
+            return null;
+        }
+        return article;
     }
 
     async getArtwork(category, artworkId) {
