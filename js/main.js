@@ -438,14 +438,29 @@ const artworkTopics = [
 // Carousel state
 let currentIndex = 0;
 
-// Initialize carousel
+//Initialize carousel
 function initializeCarousel() {
     const track = document.querySelector('.carousel-track');
     const dotsContainer = document.querySelector('.carousel-dots');
     
+    if (!track || !dotsContainer) return;
+
+    // Clear existing content
+    track.innerHTML = '';
+    dotsContainer.innerHTML = '';
+    
+    // Calculate center position for the first item
+    const centerX = '50%';
+    
     // Add topics to carousel
-    track.innerHTML = artworkTopics.map((topic, index) => `
-        <div class="carousel-item ${index === 0 ? 'active' : ''}">
+    artworkTopics.forEach((topic, index) => {
+        const item = document.createElement('div');
+        item.className = `carousel-item ${index === currentIndex ? 'active' : 
+                         index === currentIndex - 1 ? 'prev' :
+                         index === currentIndex + 1 ? 'next' : ''}`;
+        item.style.left = centerX;
+        
+        item.innerHTML = `
             <div class="carousel-topic-card" onclick="showArtworkTopic('${topic.id}')">
                 <img src="${topic.image}" alt="${topic.title}">
                 <div class="overlay">
@@ -453,50 +468,61 @@ function initializeCarousel() {
                     <p>${topic.subtitle}</p>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+        
+        track.appendChild(item);
+        
+        // Add dot
+        const dot = document.createElement('button');
+        dot.className = `carousel-dot ${index === currentIndex ? 'active' : ''}`;
+        dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+        dot.onclick = () => goToSlide(index);
+        dotsContainer.appendChild(dot);
+    });
+
+    updateCarouselPositions();
+}
+
+// Update carousel positions
+function updateCarouselPositions() {
+    const items = document.querySelectorAll('.carousel-item');
+    const dots = document.querySelectorAll('.carousel-dot');
     
-    // Add dot navigation
-    dotsContainer.innerHTML = artworkTopics.map((_, index) => `
-        <button class="carousel-dot ${index === 0 ? 'active' : ''}"
-                onclick="goToSlide(${index})"
-                aria-label="Go to slide ${index + 1}">
-        </button>
-    `).join('');
+    items.forEach((item, index) => {
+        // Reset all classes first
+        item.className = 'carousel-item';
+        
+        // Add appropriate class based on position relative to current index
+        if (index === currentIndex) {
+            item.classList.add('active');
+        } else if (index === currentIndex - 1) {
+            item.classList.add('prev');
+        } else if (index === currentIndex + 1) {
+            item.classList.add('next');
+        }
+    });
     
-    updateCarousel();
+    // Update dots
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+    });
 }
 
 // Move carousel
 function moveCarousel(direction) {
-    currentIndex = (currentIndex + direction + artworkTopics.length) % artworkTopics.length;
-    updateCarousel();
+    const newIndex = currentIndex + direction;
+    if (newIndex >= 0 && newIndex < artworkTopics.length) {
+        currentIndex = newIndex;
+        updateCarouselPositions();
+    }
 }
 
 // Go to specific slide
 function goToSlide(index) {
-    currentIndex = index;
-    updateCarousel();
-}
-
-// Update carousel display
-function updateCarousel() {
-    const track = document.querySelector('.carousel-track');
-    const items = document.querySelectorAll('.carousel-item');
-    const dots = document.querySelectorAll('.carousel-dot');
-    
-    // Update transform
-    const offset = -currentIndex * 33.333;
-    track.style.transform = `translateX(${offset}%)`;
-    
-    // Update active classes
-    items.forEach((item, index) => {
-        item.classList.toggle('active', index === currentIndex);
-    });
-    
-    dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
-    });
+    if (index >= 0 && index < artworkTopics.length) {
+        currentIndex = index;
+        updateCarouselPositions();
+    }
 }
 
 // Show artworks topics function
@@ -505,19 +531,14 @@ function showArtworksTopics() {
     const artworkGrid = document.getElementById('artwork-grid');
     
     if (artworksTopics && artworkGrid) {
+        // Reset current index when showing topics
+        currentIndex = 0;
+        
+        // Show carousel container
         artworksTopics.style.display = 'block';
         artworkGrid.style.display = 'none';
         
-        // Initialize carousel if not already done
-        if (!document.querySelector('.carousel-item')) {
-            initializeCarousel();
-        }
-    }
-}
-
-// Initialize carousel when the artworks page is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.hash === '#artworks') {
+        // Initialize or reinitialize carousel
         initializeCarousel();
     }
-});
+}
