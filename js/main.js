@@ -79,11 +79,14 @@ async function showArticleTopic(topic) {
     const listContent = document.getElementById('article-list-content');
     const listContainer = document.getElementById('article-list');
     
-    // Reset article pagination state
-    articleState.currentPage = 1;
-    articleState.currentTopic = topic;
+    // Show loading state
+    showLoading(listContent);
     
     try {
+        // Reset article pagination state
+        articleState.currentPage = 1;
+        articleState.currentTopic = topic;
+        
         // Hide topics container and pagination
         document.getElementById('articles-topics').style.display = 'none';
         document.querySelector('.articles-container > .pagination').style.display = 'none';
@@ -91,12 +94,13 @@ async function showArticleTopic(topic) {
         // Show article list container
         listContainer.style.display = 'block';
         
-        // Display articles with pagination
+        // Load and display articles
         await displayArticlesPage();
-        
     } catch (error) {
         console.error('Error loading articles:', error);
         listContent.innerHTML = '<div class="error-message">Error loading articles. Please try again.</div>';
+    } finally {
+        removeLoading(listContent);
     }
 }
 
@@ -109,15 +113,23 @@ async function showArticle(topic, articleId) {
     try {
         const article = await contentManager.getArticle(topic, articleId);
         
+        if (!article) {
+            contentContainer.innerHTML = '<div class="error-message">Article not found.</div>';
+            return;
+        }
+        
         contentContainer.innerHTML = `
             <div class="article-card">
                 <h2>${article.title}</h2>
                 <small>${article.date}</small>
-                <img src="${article.image}" alt="${article.title}" class="article-image">
-                <p>${article.content}</p>
-                <div class="tags">
-                    ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                </div>
+                ${article.content.split('\n').map(paragraph => 
+                    paragraph.trim() ? `<p>${paragraph.trim()}</p>` : ''
+                ).join('')}
+                ${article.tags ? `
+                    <div class="tags">
+                        ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                ` : ''}
             </div>
         `;
 
@@ -313,6 +325,13 @@ async function displayArticlesPage() {
     const listContent = document.getElementById('article-list-content');
     const articles = await contentManager.loadArticleCategory(articleState.currentTopic);
     
+    console.log('Loaded articles:', articles); // Debug log
+    
+    if (!articles || articles.length === 0) {
+        listContent.innerHTML = '<div class="error-message">No articles found.</div>';
+        return;
+    }
+    
     // Calculate pagination
     const startIndex = (articleState.currentPage - 1) * articleState.articlesPerPage;
     const endIndex = Math.min(startIndex + articleState.articlesPerPage, articles.length);
@@ -326,9 +345,11 @@ async function displayArticlesPage() {
                     <h3>${article.title}</h3>
                     <p>${article.excerpt}</p>
                     <small>${article.date}</small>
-                    <div class="tags">
-                        ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
+                    ${article.tags ? `
+                        <div class="tags">
+                            ${article.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
                 </div>
             `).join('')}
         </div>
