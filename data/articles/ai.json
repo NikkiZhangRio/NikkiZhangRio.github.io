@@ -6,15 +6,15 @@
       "title": "The AI Revolution: Key Milestones and Transformations",
       "excerpt": "From ChatGPT's viral launch on November 30, 2022, to the latest GPT-o1 and o3 advancements in reasoning AI, we are witnessing an unprecedented AI revolution. AI's remarkable two-year journey from Level 1 (Conversational AI), where systems could engage in basic dialogue, to Level 2 (Reasoning AI), where they demonstrate human-like logical decision-making capabilities.",
       "date": "2025-01-08",
-      "content": "The Rise of AI: A Journey from Late 2022 to Late 2024\n\nThe tech industry experienced seismic shifts between late 2022 and 2024. While 2022 was marked by economic challenges, with over 150,000 tech layoffs and tech stocks plummeting by over 30%, a groundbreaking innovation emerged, reshaping the narrative of technological advancement.\n\nOn November 30, 2022, OpenAI launched ChatGPT-3.5, introducing the world to an AI capable of generating detailed, human-like responses to questions and tasks. Within just five days, the game-changer amassed 1 million users, highlighting the hunger for innovative technology amidst a struggling tech sector. For many, ChatGPT represented a paradigm shift. Unlike earlier assistants like Siri, which offered basic functionality, ChatGPT provided deep, contextualized, and intelligent responses. It wasn't just a tool—it was a collaborator.\n\n2023: The Year of GPT-4 and Rising Concerns\n\nOn March 14, 2023, OpenAI followed up with GPT-4, a multimodal AI model that accepted both text and image inputs. GPT-4 showcased extraordinary abilities, including passing a simulated bar exam with scores in the top 10% of test takers. It could perform complex vision and language tasks, elevating AI's potential across diverse industries.",
-      "tags": ["AI", "Technology", "Innovation"]
+      "content": "The Rise of AI: A Journey from Late 2022 to Late 2024\n\nThe tech industry experienced seismic shifts between late 2022 and 2024. While 2022 was marked by economic challenges, with over 150,000 tech layoffs and tech stocks plummeting by over 30%, a groundbreaking innovation emerged, reshaping the narrative of technological advancement.\n\n",
+      "tags": ["AI", "Technology"]
     },
     {
       "id": "ai-2",
       "title": "Dawn Chorus: A Symphony of Birds",
       "excerpt": "Understanding the morning songs of different bird species and their unique patterns of communication through advanced AI analysis.",
       "date": "2025-01-10",
-      "content": "Birds have long captivated humans with their morning songs, creating a natural symphony that marks the start of each day. Through advanced AI analysis, we can now better understand these complex patterns of communication.\n\nRecent studies using machine learning algorithms have revealed fascinating insights into how different species coordinate their songs, creating what scientists call the 'dawn chorus.' This article explores the latest findings in this exciting field of research.",
+      "content": "A.",
       "tags": ["AI", "Nature", "Research"]
     }
   ]
