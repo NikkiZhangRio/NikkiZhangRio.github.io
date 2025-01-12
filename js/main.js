@@ -11,21 +11,33 @@ class ContentManager {
         }
 
         try {
-            console.log('Loading category:', category); // Debug log
-            const response = await fetch(`data/articles/${category}.json`);
+            // Add console.log to debug the fetch URL
+            const url = `/data/articles/${category}.json`;
+            console.log('Attempting to fetch from:', url);
+            
+            const response = await fetch(url);
+            
             if (!response.ok) {
+                console.error(`HTTP error! status: ${response.status}`);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            
             const data = await response.json();
-            console.log('Loaded data:', data); // Debug log
+            console.log('Loaded article data:', data);
+            
+            if (!data.articles || !Array.isArray(data.articles)) {
+                console.error('Invalid data structure:', data);
+                throw new Error('Invalid data structure');
+            }
+            
             this.articlesCache.set(category, data.articles);
             return data.articles;
         } catch (error) {
             console.error(`Error loading ${category} articles:`, error);
-            return [];
+            // Throw the error to be handled by the calling function
+            throw error;
         }
     }
-
     async loadArtworkCategory(category) {
         if (this.artworksCache.has(category)) {
             return this.artworksCache.get(category);
@@ -112,19 +124,25 @@ async function showArticleTopic(topic) {
         // Show article list container
         listContainer.style.display = 'block';
         
-        // Load and display articles
         const articles = await contentManager.loadArticleCategory(topic);
-        console.log('Loaded articles:', articles); // Debug log
         
         if (!articles || articles.length === 0) {
-            listContent.innerHTML = '<div class="error-message">No articles found for this topic.</div>';
+            listContent.innerHTML = `
+                <div class="error-message">
+                    <p>No articles found for this topic.</p>
+                    <p>Error details: Unable to load articles for ${topic}</p>
+                </div>`;
             return;
         }
         
         await displayArticlesPage();
     } catch (error) {
         console.error('Error loading articles:', error);
-        listContent.innerHTML = '<div class="error-message">Error loading articles. Please try again.</div>';
+        listContent.innerHTML = `
+            <div class="error-message">
+                <p>Error loading articles. Please try again.</p>
+                <p>Error details: ${error.message}</p>
+            </div>`;
     } finally {
         removeLoading(listContent);
     }
